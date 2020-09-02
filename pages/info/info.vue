@@ -26,8 +26,11 @@
 		</view>
 		<view class="buy">
 			<text>100</text>
-			<button type="primary" size="mini" @click="buy" style="z-index: 100;">购买</button>
+			<button type="primary" size="mini" @click="buy" >购买</button>
 		</view>
+		<uni-chose v-model='show' :show='show'>
+		
+		</uni-chose>
 		<view class="bottom">
 			<uni-tabs :title='title' :active="active" @change='activeChagne' :isSticky='false'>
 				<view class="slot1" slot="a0" v-html="info">
@@ -47,14 +50,13 @@
 				info:'',
 				star:true,
 				like:true,
-				title:['详情','评论(0)']
+				title:['详情','评论(0)'],
+				show:false,
 			};
 		},
 		methods:{
 			buy(){
-				uni.navigateTo({
-					url:'../classify/classify'
-				})
+				this.show=true
 			},
 			activeChagne(t){
 				console.log(t)
@@ -108,7 +110,7 @@ page{
 		}
 	}
 	.t-i-bottom{
-		z-index: 100;
+		// z-index: 100;
 		width: 95%;
 		display: flex;
 		justify-content: space-between;
@@ -168,4 +170,5 @@ page{
 		background-color: red;
 	}
 }
+
 </style>

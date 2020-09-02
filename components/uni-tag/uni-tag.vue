@@ -86,8 +86,12 @@
 <style scoped>
 	.uni-tag {
 		/* #ifndef APP-NVUE */
-		display: flex;
+		/* display: flex; */
 		/* #endif */
+		/* white-space: nowrap; */
+		display: inline-block;
+		/* flex:1; */
+		min-width:66px ;
 		padding: 0px 16px;
 		height: 30px;
 		line-height: 30px;
@@ -98,6 +102,8 @@
 		border-width: 1rpx;
 		border-style: solid;
 		border-color: #f8f8f8;
+		box-sizing: border-box;
+		text-align: center;
 	}
 
 	.uni-tag--circle {
@@ -116,9 +122,9 @@
 	}
 
 	.uni-tag--small {
-		height: 20px;
-		padding: 0px 8px;
-		line-height: 20px;
+		height: 25px;
+		padding:0 13px;
+		line-height: 25px;
 		font-size: 12px;
 	}
 

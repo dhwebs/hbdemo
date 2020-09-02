@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="tuijian" v-for="item in 3">
-			<image src="/static/images/0.jpg" mode="aspectFill"></image>
+			<image src="/static/images/0.jpg"></image>
 			<view class="t-right">
 				<text class="titleText">推荐火锅活动</text>
 				<text class="infoText">2020-08-01至2020-09-01</text>
@@ -35,14 +35,14 @@
 <style lang="scss" scoped>
 	.tuijian{
 		width: 100%;
-		height: 300rpx;
+		height: 280rpx;
 		border-radius: 25rpx;
 		overflow: hidden;
 		margin-top: 20rpx;
 		background: $uni-bg-color;
 		display: flex;
 		image{
-			width: 250rpx;
+			width: 230rpx;
 			height: 100%;
 			margin-right: 20rpx;
 		}
