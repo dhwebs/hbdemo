@@ -28,9 +28,7 @@
 			<text>100</text>
 			<button type="primary" size="mini" @click="buy" >购买</button>
 		</view>
-		<uni-chose v-model='show' :show='show'>
-		
-		</uni-chose>
+		<uni-chose v-model='show' :show='show'></uni-chose>
 		<view class="bottom">
 			<uni-tabs :title='title' :active="active" @change='activeChagne' :isSticky='false'>
 				<view class="slot1" slot="a0" v-html="info">

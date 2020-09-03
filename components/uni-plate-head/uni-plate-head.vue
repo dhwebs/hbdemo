@@ -2,8 +2,10 @@
 	<view>
 		<view class="b-top">
 			<image src="/static/images/line.png" mode="aspectFit"></image>
-			<text>推荐活动</text>
-			<view class="b-t-right infoText">
+			<slot>
+				<text>推荐活动</text>
+			</slot>
+			<view class="b-t-right infoText" @click="more">
 				更多<uni-icons type="arrowright"></uni-icons>
 			</view>
 		</view>
@@ -17,6 +19,12 @@
 			return {
 				
 			};
+		},
+		methods:{
+			more(){
+				console.log(1111111)
+				this.$emit('click',1)
+			}
 		}
 	}
 </script>

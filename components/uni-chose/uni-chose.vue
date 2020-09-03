@@ -17,16 +17,18 @@
 					<slot>
 						<view class="box">
 							<text class="titleText">颜色</text>
+							<text v-if='colorShow' style="color: red;margin-left: 20px;font-size: 22rpx;">请选择颜色</text>
 							<view class="color">
-								<uni-tag class="tag" v-for="item in list" :key='item.id' :text="item.keyName" :inverted='item.check' size="small" :type="item.check?'error':'default'" :circle="true" @click="checkColor(item,list)"></uni-tag>
+								<uni-tag class="tag" v-for="item in list" :key='item.id' :text="item.keyName" :inverted='item.check' size="small" :type="item.check?'error':'default'" :circle="true" @click="checkColor(item,list,1)"></uni-tag>
 							</view>
 							<text class="titleText">尺寸</text>
+							<text v-if='sizeShow' style="color: red;margin-left: 20px;font-size: 22rpx;">请选择尺寸</text>
 							<view class="color">
-								<uni-tag class="tag" v-for="item in list2" :key='item.id' :text="item.keyName" :inverted='item.check' size="small" :type="item.check?'error':'default'" :circle="true" @click="checkColor(item,list2)"></uni-tag>
+								<uni-tag class="tag" v-for="item in list2" :key='item.id' :text="item.keyName" :inverted='item.check' size="small" :type="item.check?'error':'default'" :circle="true" @click="checkColor(item,list2,2)"></uni-tag>
 							</view>
 							<view class="num">
 								<text class="titleText">数量</text>
-								<uni-number-box :min="0" :max="9"></uni-number-box>
+								<uni-number-box :min="1" :max="9" @change="numChange"></uni-number-box>
 							</view>
 						</view>
 					</slot>
@@ -61,7 +63,10 @@
 					{keyName:'XL',check:false,id:5},
 					{keyName:'XXL',check:false,id:6},
 					{keyName:'XXXL',check:false,id:7},
-				]
+				],
+				colorShow:false,
+				sizeShow:false,
+				num:1
 			};
 		},
 		watch:{
@@ -80,17 +85,30 @@
 				this.$refs.popup.close()
 			},
 			btnClick(){
-				this.$emit('click',1)
+				if(this.colorShow || this.sizeShow) return
+				let data=`?btn=1&model='s111111111'&number=${this.num}`
+				// this.$emit('click',data)
 				this.$refs.popup.close()
+				uni.navigateTo({
+					url:'../pay/pay'+data,
+				})
 			},
-			checkColor(item,list){
+			checkColor(item,list,type){
 				list.forEach(res=>{
 					if(item.id==res.id){
 						item.check=!item.check
+						if(type==1){
+							this.colorShow=!item.check
+						}else if(type==2){
+							this.sizeShow=!item.check
+						}
 					}else{
 						res.check=false
 					}
 				})
+			},
+			numChange(val){
+				this.num=val
 			}
 		}
 	}

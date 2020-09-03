@@ -26,7 +26,7 @@
 				</view>
 			</swiper-item>
 		</swiper>
-		<view class="navinfo">
+	<!-- 	<view class="navinfo">
 			<view class="grid">
 				<image src="../../static/images/图标1.png" mode="aspectFit"></image>
 				<text>热销</text>
@@ -43,17 +43,17 @@
 				<image src="../../static/images/coupon_center.png" mode="aspectFit"></image>
 				<text>分类</text>
 			</view>
-		</view>
+		</view> -->
 		<view class="banner">
 			<uni-plate-head></uni-plate-head>
 			<uni-activity v-for="item in 3"></uni-activity>
 		</view>
 		<view class="banner2">
-			<uni-plate-head></uni-plate-head>
+			<uni-plate-head @click="more">产品推荐</uni-plate-head>
 			<uni-purchase></uni-purchase>
 		</view>
 		<view class="banner3">
-			<uni-plate-head></uni-plate-head>
+			<uni-plate-head>最新资讯</uni-plate-head>
 			<uni-activity v-for="item in 3">
 				<template #bottom>
 					<text class="infoText">点赞：0</text>
@@ -71,8 +71,15 @@
 
 			}
 		},
+		onPullDownRefresh (){
+			setTimeout(uni.stopPullDownRefresh(),2000)
+		},
 		methods: {
-		
+			more(e){
+				uni.switchTab({
+					url:'../ticket/ticket'
+				})
+			}
 		}
 	}
 </script>

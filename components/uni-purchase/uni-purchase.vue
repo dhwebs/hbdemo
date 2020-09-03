@@ -13,7 +13,7 @@
 					<text>￥990</text>
 					<text class="oldMoney">￥99</text>
 					<slot name='button'>
-						<button type="success">购买</button>
+						<button type="success" @click="buy">购买</button>
 					</slot>
 				</view>
 			</view>
@@ -28,6 +28,13 @@
 			return {
 				
 			};
+		},
+		methods:{
+			buy(){
+				uni.navigateTo({
+					url:'../info/info'
+				})
+			}
 		}
 	}
 </script>
