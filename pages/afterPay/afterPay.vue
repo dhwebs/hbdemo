@@ -15,7 +15,7 @@
 			好物推荐
 		</text>
 		<view class="box">
-			<uni-purchase></uni-purchase>
+			<uni-purchase type="column"></uni-purchase>
 		</view>
 	</view>
 </template>
@@ -42,7 +42,7 @@
 	margin-bottom: 60rpx;
 }
 .top{
-	margin-top: 50rpx;
+	margin: 50rpx 0 ;
 	width: 95vw;
 	height: 300rpx;
 	border-radius:40rpx ;
@@ -59,7 +59,7 @@
 	}
 }
 .line{
-	margin-top: 50rpx;
+	margin: 20rpx 0;
 	width: 95vw;
 	font-size: 14px;
 	color: red;
@@ -70,7 +70,7 @@
 		content: '';
 		white-space: nowrap;
 		flex: 1;
-		margin:0 20rpx;
+		// margin:0 20rpx;
 		overflow: hidden;
 		height: 1rpx;
 		border-top:1rpx dashed #ccc ;

@@ -21,7 +21,7 @@ export default {
 }
 /* #endif */
 page{
-	background-color: #fcfcfc;
+	background-color: #f4f4f4;
 	display: flex;
 	justify-content: center;
 	height: 100%;

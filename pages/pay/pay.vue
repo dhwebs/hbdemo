@@ -75,8 +75,9 @@
 	background-color: #fff;
 	height: 320rpx;
 	margin-top: 50rpx;
-	border-radius: 40rpx;
+	border-radius: 20rpx;
 	width: 90vw;
+	overflow: hidden;
 	.t-top{
 		height: 180rpx;
 		display: flex;
@@ -85,7 +86,7 @@
 			width: 150rpx;
 			height: 100%;
 			margin-right: 20rpx;
-			border-radius: 10rpx;
+			border-radius: 20rpx;
 		}
 		.t-t-right{
 			flex:1;
@@ -105,8 +106,9 @@
 	}
 }
 .banner{
+	overflow: hidden;
 	margin-top:50rpx;
-	border-radius: 40rpx;
+	border-radius: 20rpx;
 	background-color: #fff;
 	.b-footer{
 		width: 100%;
