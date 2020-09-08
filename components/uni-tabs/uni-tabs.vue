@@ -72,8 +72,7 @@
 				this.$emit('change',i)
 			},
 			activeChagne2(t){
-				this.active=t.detail.current
-				this.$emit('change',this.active)
+				this.$emit('change',t.detail.current)
 			}
 		}
 	}
