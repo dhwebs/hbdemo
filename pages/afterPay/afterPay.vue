@@ -39,6 +39,7 @@
 
 <style lang="scss" scoped>
 .box{
+	width: 95vw;
 	margin-bottom: 60rpx;
 }
 .top{

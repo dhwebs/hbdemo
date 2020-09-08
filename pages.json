@@ -10,13 +10,13 @@
 		{
 			"path": "pages/ticket/ticket",
 			"style": {
-				"navigationBarTitleText": "购票"
+				"navigationBarTitleText": "分类"
 			}
 		},
 		{
 			"path": "pages/signUp/signUp",
 			"style": {
-				"navigationBarTitleText": "报名"
+				"navigationBarTitleText": "购票"
 			}
 		},
 		{

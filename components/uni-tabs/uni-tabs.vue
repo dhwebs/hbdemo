@@ -1,6 +1,6 @@
 <template>
-	<view class="tabBox">
-		<scroll-view scroll-x :class="{sticky:isSticky,scroll:true}" :show-scrollbar="true" :scroll-into-view="intoIndex">
+	<view :class="position=='top' ? 'tabBox' : 'tabBox2'">
+		<scroll-view :scroll-x="position=='top'" :scroll-y="position!='top'" :class="{'sticky':isSticky,'scroll2':position!='top','scroll':true}" :show-scrollbar="true" :scroll-into-view="intoIndex">
 			<text 
 				:class="{'active' :intoIndex==`a${i}`}" 
 				v-for="(item,i) in title"
@@ -10,7 +10,7 @@
 				>{{item}}</text>
 		</scroll-view>
 		<view class="bottom">
-			<swiper @change="activeChagne2" class="swiper" :current='active'>
+			<swiper @change="activeChagne2" class="swiper" :current='active' :vertical="position!='top'">
 				<swiper-item class="red" v-for="(item,i) in title">
 					<slot :name="`a${i}`"></slot>
 				</swiper-item>
@@ -25,10 +25,11 @@
 	 * 引入tabs组件，uni-tabs父传子两个参数 
 	 * 1.title 标题数组，展示在tabs头部
 	 * 2.active 激活项，默认0，即第一项
-	 * 
+	 * 3.position 标题位置 默认在上 可选top 及left
 	 * uni-tabs @change 返回参数为当前显示项的下标
 	 * 
 	 * uni-tabs 内嵌标签设置slot='a'+下标 将展示激活项对应的标签，这是由于swiper无法放slot
+	 * 
 	 * 
 	 * */
 	export default {
@@ -44,6 +45,10 @@
 			isSticky:{
 				type: Boolean,
 				default: true
+			},
+			position:{
+				type:String,
+				default:'top'
 			}
 		},
 		data() {
@@ -53,7 +58,6 @@
 		},
 		created(){
 			this.intoIndex=`a${this.active}`
-			this.stickyClass=this.sticky && 'sticky'
 		},
 		watch:{
 			active(val){
@@ -69,6 +73,7 @@
 			},
 			activeChagne2(t){
 				this.active=t.detail.current
+				this.$emit('change',this.active)
 			}
 		}
 	}
@@ -86,11 +91,18 @@ page{
 	flex-direction: column;
 	// overflow: hidden;
 }
+.tabBox2{
+	height: 100%;
+	display: flex;
+}
 
 .scroll{
 	width: 100%;
 	white-space: nowrap;
 	background: #fff;
+	.active{
+		border-bottom: 2px solid $uni-color-primary;
+	}
 	/* 隐藏滚动条 */
 	::-webkit-scrollbar {
 		width: 0;
@@ -105,15 +117,28 @@ page{
 		line-height: 50px;
 	}
 }
+.scroll2{
+	width: 150rpx;
+	white-space:pre-wrap;
+	text-align: center;
+	text{
+		display: block;
+		padding: 0;
+		margin:10rpx;
+		line-height: 50px;
+	}
+	.active{
+		border: none;
+		border-right: 2px solid $uni-color-primary;
+	}
+}
 .sticky{
 	position: sticky;
 	// top:90rpx;
 	z-index: 999;
 	padding-bottom: 5rpx;
 }
-.active{
-	border-bottom: 2px solid $uni-color-primary;
-}
+
 .bottom{
 	margin-top:  20rpx;
 	flex: 1;

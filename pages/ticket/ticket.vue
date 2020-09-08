@@ -1,10 +1,10 @@
 <template>
 	<view class="bigbox">
-		<uni-tabs :title='title' :active="active" @change="activeChagne">
+		<uni-tabs :title='title' :active="active" position='left' @change="activeChagne">
 			<scroll-view class="red" v-for="(item,i) in title" :scroll-y='true' :slot="`a${i}`">
-				<uni-purchase></uni-purchase>
-				<uni-purchase></uni-purchase>
-				<uni-purchase></uni-purchase>
+				<uni-purchase type='column'></uni-purchase>
+				<!-- <uni-purchase type='column'></uni-purchase> -->
+				<!-- <uni-purchase type='column'></uni-purchase> -->
 			</scroll-view>
 		</uni-tabs>
 	</view>

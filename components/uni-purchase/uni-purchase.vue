@@ -19,7 +19,7 @@
 			</view>
 		</view>
 		<view class="column" v-if="type=='column'">
-			<view class="top" v-for="item in 4" @click="buy">
+			<view class="top" v-for="item in 3" @click="buy">
 				<image src="/static/images/0.jpg"></image>
 				<text class="titleText">推荐火锅活动</text>
 				<text class="infoText">2020-08-01至2020-09-01</text>
@@ -105,21 +105,21 @@
 		}
 	}
 	.column{
-		width: 95vw;
+		width: 100%;
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
 		.top{
 			background: #fff;
 			margin-bottom: 30rpx;
-			width: 46vw;
+			width: 49%;
 			display: flex;
 			flex-direction: column;
 			overflow: hidden;
 			border-radius: 20rpx;
 			image{
 				width: 100%;
-				height: 300rpx;
+				height: 250rpx;
 			}
 			text:nth-child(1){
 				color:red
