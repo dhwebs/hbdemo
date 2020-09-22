@@ -7,7 +7,7 @@
 				:key="i"
 				:id="`a${i}`"
 				@click="indexChange(i)"
-				>{{item}}</text>
+				>{{item.type}}</text>
 		</scroll-view>
 		<view class="bottom">
 			<swiper @change="activeChagne2" class="swiper" :current='active' :vertical="position!='top'">
@@ -120,11 +120,13 @@ page{
 	width: 150rpx;
 	white-space:pre-wrap;
 	text-align: center;
+	padding-top: 10rpx;
 	text{
 		display: block;
 		padding: 0;
-		margin:10rpx;
+		margin:0 10rpx 20rpx 10rpx;
 		line-height: 50px;
+		border-right: 2px solid #fff;
 	}
 	.active{
 		border: none;

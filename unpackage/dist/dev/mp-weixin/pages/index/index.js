@@ -100,8 +100,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
-  uniLink: function() {
-    return __webpack_require__.e(/*! import() | components/uni-link/uni-link */ "components/uni-link/uni-link").then(__webpack_require__.bind(null, /*! @/components/uni-link/uni-link.vue */ 19))
+  uniIcons: function() {
+    return Promise.all(/*! import() | components/uni-icons/uni-icons */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-icons/uni-icons")]).then(__webpack_require__.bind(null, /*! @/components/uni-icons/uni-icons.vue */ 73))
+  },
+  uniPlateHead: function() {
+    return __webpack_require__.e(/*! import() | components/uni-plate-head/uni-plate-head */ "components/uni-plate-head/uni-plate-head").then(__webpack_require__.bind(null, /*! @/components/uni-plate-head/uni-plate-head.vue */ 81))
+  },
+  uniActivity: function() {
+    return __webpack_require__.e(/*! import() | components/uni-activity/uni-activity */ "components/uni-activity/uni-activity").then(__webpack_require__.bind(null, /*! @/components/uni-activity/uni-activity.vue */ 88))
+  },
+  uniPurchase: function() {
+    return __webpack_require__.e(/*! import() | components/uni-purchase/uni-purchase */ "components/uni-purchase/uni-purchase").then(__webpack_require__.bind(null, /*! @/components/uni-purchase/uni-purchase.vue */ 95))
   }
 }
 var render = function() {
@@ -139,7 +148,54 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -161,11 +217,20 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 var _default =
 {
   data: function data() {
-    return {
-      href: 'https://uniapp.dcloud.io/component/README?id=uniui' };
+    return {};
+
 
   },
-  methods: {} };exports.default = _default;
+  onPullDownRefresh: function onPullDownRefresh() {
+    setTimeout(uni.stopPullDownRefresh(), 2000);
+  },
+  methods: {
+    more: function more(e) {
+      uni.switchTab({
+        url: '../ticket/ticket' });
+
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 17 */

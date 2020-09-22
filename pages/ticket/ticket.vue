@@ -1,10 +1,8 @@
 <template>
 	<view class="bigbox">
-		<uni-tabs :title='title' :active="active" position='left' @change="activeChagne">
+		<uni-tabs :title='title' :active="active" position='top' @change="activeChagne">
 			<scroll-view class="red" v-for="(item,i) in title" :scroll-y='true' :slot="`a${i}`">
-				<uni-purchase type='column'></uni-purchase>
-				<!-- <uni-purchase type='column'></uni-purchase> -->
-				<!-- <uni-purchase type='column'></uni-purchase> -->
+				<uni-purchase type='row' :list="list"></uni-purchase>
 			</scroll-view>
 		</uni-tabs>
 	</view>
@@ -14,14 +12,52 @@
 	export default {
 		data() {
 			return {
-				title:['全部','景区','演出','其他'],
-				active:0
+				title:[],
+				active:0,
+				list:[]
 			};
+		},
+		created() {
+			this.getTitle()
+			this.getShop()
 		},
 		methods:{
 			activeChagne(t){
 				console.log(t)
 				this.active=t
+				this.getShop()
+			},
+			getTitle(){
+				uniCloud.callFunction({
+					name:'get',
+					data:{
+						cloud:'orderType'
+					}
+				}).then(res=>{
+					this.title=res.result.data
+					this.title.unshift({type:'全部'})
+					console.log(res,this.title)
+				}).catch(err=>{
+					console.log(err,'err')
+				})
+			},
+			getShop(){
+				let orderType=''
+				if(this.active){
+					orderType=this.title[this.active].type
+				}
+				uniCloud.callFunction({
+					name:'get',
+					data:{
+						cloud:'order',
+						orderType
+					}
+				}).then(res=>{
+					this.list=res.result.data
+					console.log(res,this.list)
+				}).catch(err=>{
+					console.log(err,'err')
+				})
 			},
 		}
 	}

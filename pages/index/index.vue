@@ -50,7 +50,7 @@
 		</view>
 		<view class="banner2">
 			<uni-plate-head @click="more">产品推荐</uni-plate-head>
-			<uni-purchase></uni-purchase>
+			<uni-purchase :list="list"></uni-purchase>
 		</view>
 		<view class="banner3">
 			<uni-plate-head>最新资讯</uni-plate-head>
@@ -68,16 +68,33 @@
 	export default {
 		data() {
 			return {
-
+				list:[]
 			}
 		},
 		onPullDownRefresh (){
-			setTimeout(uni.stopPullDownRefresh(),2000)
+			this.getShop()
+			setTimeout(()=>uni.stopPullDownRefresh(),2000)
+		},
+		created() {
+			this.getShop()
 		},
 		methods: {
 			more(e){
 				uni.switchTab({
 					url:'../ticket/ticket'
+				})
+			},
+			getShop(){
+				uniCloud.callFunction({
+					name:'get',
+					data:{
+						cloud:'order'
+					}
+				}).then(res=>{
+					this.list=res.result.data
+					console.log(res,this.list)
+				}).catch(err=>{
+					console.log(err,'err')
 				})
 			}
 		}

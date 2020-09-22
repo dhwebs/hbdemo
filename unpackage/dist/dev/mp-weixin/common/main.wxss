@@ -26,16 +26,39 @@
 /* 文章场景相关 */
 /* 解决头条小程序组件内引入字体不生效的问题 */
 page {
-  background-color: #fafafa;
+  background-color: #f4f4f4;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
-  padding-bottom: 60rpx;
+  height: 100%;
 }
 page .bigBox {
   width: 680rpx;
+}
+.infoText {
+  color: #999;
+  font-size: 24rpx;
+}
+.titleText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 600;
+}
+.titleAllText {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 600;
+}
+.oldMoney {
+  margin: 10rpx;
+  font-size: 24rpx;
+  color: #999;
+  text-decoration: line-through;
 }
 

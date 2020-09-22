@@ -1,6 +1,5 @@
 <template>
 	<view class="box">
-		<!-- <uni-ball></uni-ball> -->
 		<swiper class="top-swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
 			<swiper-item>
 				<view class="swiper-item">
@@ -13,11 +12,11 @@
 				</view>
 			</swiper-item>
 		</swiper>
+		<text class="titleAllText title">{{orderDetail.title}}</text>
 		<view class="top-info">
-			<text class="titleAllText ">【暑期限时特惠】三亚大小洞天单门票+彩虹滑道体验票</text>
 			<view class="money">
-				<text class="realmoney">￥100</text>
-				<text class="infoText oldMoney">￥120</text>	
+				<text class="realmoney">￥{{orderDetail.realPrice}}</text>
+				<text class="infoText oldMoney">￥{{orderDetail.oldPrice}}</text>	
 			</view>
 			<view class="t-i-bottom infoText">
 				<view class="left" @click="likeClick"><text>点赞</text><image :src="like?'../../static/images/likes.png':'../../static/images/like.png'"></image></view>
@@ -25,7 +24,7 @@
 			</view>
 		</view>
 		<view class="buy">
-			<text>100</text>
+			<text>{{orderDetail.realPrice}}</text>
 			<button type="primary" size="mini" @click="buy" >购买</button>
 		</view>
 		<uni-chose v-model='show' :show='show'></uni-chose>
@@ -43,14 +42,19 @@
 	export default {
 		data() {
 			return {
+				orderDetail:{},
 				value:'',
 				active:0,
 				info:'',
 				star:true,
 				like:true,
-				title:['详情','评论(0)'],
+				title:[{type:'详情'},{type:'评论(0)'}],
 				show:false,
 			};
+		},
+		onLoad(option) {
+			console.log(option.item)
+			this.orderDetail=JSON.parse(option.item)
 		},
 		methods:{
 			buy(){
@@ -92,6 +96,10 @@ page{
 			width: 100%;
 		}
 	}
+}
+.title{
+	display: block;
+	background-color: #fff;
 }
 .top-info{
 	// height: 200rpx;

@@ -1,34 +1,34 @@
 <template>
 	<view>
-		<view class="tuijian" v-for="item in 3" v-if="type=='row'">
+		<view class="tuijian" v-for="item in list" v-if="type=='row'">
 			<image src="/static/images/0.jpg"></image>
 			<view class="t-right">
-				<text class="titleText">推荐火锅活动</text>
-				<text class="infoText">2020-08-01至2020-09-01</text>
-				<text>坂田</text>
+				<text class="titleText">{{item.title}}</text>
+				<text class="infoText">{{item.beginTime}}至{{item.endTime}}</text>
+				<text>{{item.address}}</text>
 				<view class="t-tag">
-					<text class="tag">新品</text>
+					<text class="tag">{{item.sign}}</text>
 				</view>
 				<view class="t-bottom">
-					<text>￥990</text>
-					<text class="oldMoney">￥99</text>
+					<text>￥{{item.realPrice}}</text>
+					<text class="oldMoney">￥{{item.oldPrice}}</text>
 					<slot name='button'>
-						<button type="success" @click="buy">购买</button>
+						<button type="success" @click="buy(item)">{{item.type==1 ? '购买' : '报名'}}</button>
 					</slot>
 				</view>
 			</view>
 		</view>
 		<view class="column" v-if="type=='column'">
-			<view class="top" v-for="item in 3" @click="buy">
+			<view class="top" v-for="item in list" @click="buy(item)">
 				<image src="/static/images/0.jpg"></image>
-				<text class="titleText">推荐火锅活动</text>
-				<text class="infoText">2020-08-01至2020-09-01</text>
+				<text class="titleText">{{item.title}}</text>
+				<text class="infoText">{{item.beginTime}}至{{item.endTime}}</text>
 				<view class="t-tag">
-					<text class="tag">新品</text>
+					<text class="tag">{{item.sign}}</text>
 				</view>
 				<view class="t-bottom">
-					<text>￥990</text>
-					<text class="oldMoney">￥99</text>
+					<text>￥{{item.realPrice}}</text>
+					<text class="oldMoney">￥{{item.oldPrice}}</text>
 				</view>
 			</view>
 		</view>
@@ -44,17 +44,24 @@
 				type: String,
 				default: 'row'
 			},
-			
+			list:{
+				type: Array,
+				default: ()=>[]
+			}
 		},
 		data() {
 			return {
 				
 			};
 		},
+		created() {
+			console.log(this.list)
+		},
 		methods:{
-			buy(){
+			buy(item){
+				item=JSON.stringify(item)
 				uni.navigateTo({
-					url:'../info/info'
+					url:'../info/info?item='+item
 				})
 			}
 		}
