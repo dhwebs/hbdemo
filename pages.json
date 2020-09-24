@@ -22,23 +22,44 @@
 		{
 			"path": "pages/center/center",
 			"style": {
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "个人中心",
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/info/info",
+			"style" : {}
+		},
+		{
+			"path" : "pages/classify/classify",
+			"style" : {}
+		},
+		{
+			"path" : "pages/pay/pay",
+			"style" : {}
+		},
+		{
+			"path" : "pages/afterPay/afterPay",
+			"style" : {}
+		},
+		{
+			"path": "pages/main/main",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh":true,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path": "pages/house/house",
+			"style": {
+				"navigationBarTitleText": "房间",
+				"enablePullDownRefresh":true,
+				"navigationStyle":"custom"
 			}
 		}
 	    ,{
-            "path" : "pages/info/info",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/classify/classify",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/pay/pay",
-            "style" : {}
-        }
-        ,{
-            "path" : "pages/afterPay/afterPay",
+            "path" : "pages/addHouse/addHouse",
             "style" : {}
         }
     ],
@@ -53,22 +74,16 @@
 		"borderStyle": "white",
 		"list": [
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/main/main",
 				"iconPath": "static/images/tabBar/home.png",
 				"selectedIconPath": "static/images/tabBar/home_selected.png",
 				"text": "首页"
 			},
 			{
-				"pagePath": "pages/ticket/ticket",
+				"pagePath": "pages/house/house",
 				"iconPath": "static/images/tabBar/ticket.png",
 				"selectedIconPath": "static/images/tabBar/ticket_selected.png",
-				"text": "购票"
-			},
-			{
-				"pagePath": "pages/signUp/signUp",
-				"iconPath": "static/images/tabBar/signUp.png",
-				"selectedIconPath": "static/images/tabBar/signUp_selected.png",
-				"text": "报名"
+				"text": "房间"
 			},
 			{
 				"pagePath": "pages/center/center",
