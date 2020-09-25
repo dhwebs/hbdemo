@@ -11,12 +11,10 @@
 			<view class="button">办理业务</view>
 		</view> -->
 		<uni-list class="box">
-			<uni-list-item class="b-box" title="租房记录" link to="/pages/index/index"></uni-list-item>
-			<uni-list-item title="退房记录" link to="/pages/index/index"></uni-list-item>
-			<uni-list-item title="临时房记录" link to="/pages/index/index"></uni-list-item>
+			<uni-list-item title="租房记录" @click="goto('../rentRecord/rentRecord')"></uni-list-item>
+			<uni-list-item title="退房记录" @click="goto('../rentRecord/rentRecord?state=false')"></uni-list-item>
 			<uni-list-item title="维修记录" link to="/pages/index/index"></uni-list-item>
 			<uni-list-item title="收支记录" link to="/pages/index/index"></uni-list-item>
-			<uni-list-item title="水电费" link to="/pages/index/index"></uni-list-item>
 		</uni-list>
 	</view>
 </template>
@@ -27,6 +25,13 @@
 			return {
 				
 			};
+		},
+		methods:{
+			goto(url){
+				uni.navigateTo({
+					url:url
+				})
+			}
 		}
 	}
 </script>

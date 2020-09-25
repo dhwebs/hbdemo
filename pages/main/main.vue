@@ -8,21 +8,21 @@
 					<view class="text">管理员</view>
 				</view>
 			</view>
-			<view class="button">办理业务</view>
+			<!-- <view class="button">办理业务</view> -->
 		</view>
 		<view class="banner">
 			<view class="b-top">空置房屋</view>
 			<view class="b-bottom">
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{longNotRent}}</view>
 					<view class="b-little">长租</view>
 				</view>
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{shortNotRent}}</view>
 					<view class="b-little">短租</view>
 				</view>
 				<view class="b-b-banner">
-					<view>100%</view>
+					<view>{{((longNotRent+shortNotRent)*100/allHouse).toFixed(2)}}%</view>
 					<view class="b-little">空房率</view>
 				</view>
 			</view>
@@ -31,15 +31,15 @@
 			<view class="b-top">今日数据</view>
 			<view class="b-bottom">
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{todayLong}}</view>
 					<view class="b-little">长租</view>
 				</view>
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{todayShort}}</view>
 					<view class="b-little">短租</view>
 				</view>
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{todayOut}}</view>
 					<view class="b-little">退房</view>
 				</view>
 			</view>
@@ -48,11 +48,11 @@
 			<view class="b-top">我的房源</view>
 			<view class="b-bottom">
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{longRent}}</view>
 					<view class="b-little">长租</view>
 				</view>
 				<view class="b-b-banner">
-					<view>0</view>
+					<view>{{shortRent}}</view>
 					<view class="b-little">短租</view>
 				</view>
 				<view class="b-b-banner" @click="addHouse">
@@ -68,14 +68,71 @@
 	export default {
 		data() {
 			return {
-				
+				allHouse:0,
+				longNotRent:0,
+				shortNotRent:0,
+				longRent:0,
+				shortRent:0,
+				todayLong:0,
+				todayShort:0,
+				todayOut:0
 			};
+		},
+		created() {
+		},
+		onPullDownRefresh() {//下拉刷新
+			this.getMain()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			},1500)
+		},
+		onShow() {
+			this.getMain()
 		},
 		methods:{
 			addHouse(){
+				console.log(123)
 				uni.navigateTo({
 					url:'../addHouse/addHouse'
 				})
+			},
+			getHouse(cloud,type,state,result){
+				uniCloud.callFunction({
+					name:'count',
+					data:{
+						cloud:cloud,
+						purpose:type,
+						state:state
+					}
+				}).then(res=>{
+					console.log(res,11111)
+					this[result]=res.result.total
+				}).catch(err=>{
+					console.log(err,'err')
+				})
+			},
+			getRent(type,state,result){
+				uniCloud.callFunction({
+					name:'count',
+					data:{
+						cloud:'rent',
+						purpose:type,
+					}
+				}).then(res=>{
+					this[result]=res.result.total
+				}).catch(err=>{
+					console.log(err,'err')
+				})
+			},
+			getMain(){
+				this.getHouse('house','','','allHouse')
+				this.getHouse('house','长租','未租','longNotRent')
+				this.getHouse('house','短租','未租','shortNotRent')
+				this.getHouse('house','长租','','longRent')
+				this.getHouse('house','短租','','shortRent')
+				this.getHouse('rent','长租','','todayLong')
+				this.getHouse('rent','短租','','todayShort')
+				this.getHouse('rent','',false,'todayOut')
 			}
 		}
 	}

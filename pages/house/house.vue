@@ -1,21 +1,32 @@
 <template>
 	<view>
 		<view class="top">
-			<input type="text" v-mode="word" placeholder="搜索房间"/>
+			<input type="text" v-model="word" placeholder="搜索房间" @confirm="search"/>
 			<image class="top-r" src="/static/images/search/icon2.png" mode="aspectFit" @click="drawerClick"></image>
 		</view>
 		<uni-drawer ref="drawer" mode="right">
-		    <view style="padding:30rpx;">
-		        <view class="uni-title">抽屉式导航</view>
-		    </view>
+			<view style="padding:30rpx;" class="drawer">
+				<view class="uni-title">筛选条件</view>
+				<view class="uni-title">用途</view>
+				<view class="button">
+					<button :type="purpose=='长租'?'primary':'default'" @click="searchChange('purpose','长租')">长租</button>
+					<button :type="purpose=='短租'?'primary':'default'" @click="searchChange('purpose','短租')">短租</button>
+				</view>
+				<view class="uni-title">状态</view>
+				<view class="button">
+					<button :type="state=='未租'?'primary':'default'" @click="searchChange('state','未租')">未租</button>
+					<button :type="state=='已租'?'primary':'default'" @click="searchChange('state','已租')">已租</button>
+				</view>
+			</view>
+			<button type="primary" class="drawerButton" @click="searchCheck">确定</button>
 		</uni-drawer>
 		<view class="banner">
-			<view class="b-box" v-for="item in houseList" :key="item._id">
+			<view class="b-box" :class="item.state=='已租'?'b-box2':''" v-for="(item,i) in houseList" :key="i" @click="gotoHouse(item)">
 				<text class="b-b-top1">{{item.state=='未租'?'空':'租'}}</text>
 				<text class="b-b-top2">{{item.houseNumber}}</text>
 				<text class="b-b-top3">{{item.purpose}}</text>
 				<text class="b-b-top5">租金：{{item.rent}}元/{{item.purpose=='长租'?'月':'日'}}</text>
-				<text class="b-b-top4">到期时间 : {{item.state=='未租'?'空置未租':'2020-09-30'}}</text>
+				<text class="b-b-top4">到期时间 : {{item.state=='未租'?'空置未租':item.endTime}}</text>
 			</view>
 			
 			<view class="b-box" @click="addHouse">
@@ -30,36 +41,78 @@
 		data() {
 			return {
 				word:'',
-				houseList:[]
+				houseList:[],
+				cursor:1,
+				state:'',
+				purpose:'',
 			};
 		},
 		created() {
 			this.getHouse()
 		},
+		onPullDownRefresh() {//下拉刷新
+			this.cursor=1
+			this.houseList=[]
+			this.getHouse()
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+			},1500)
+		},
+		onReachBottom() {//触底加载更多
+			this.getHouse()
+		},
 		methods:{
-			getHouse(){
+			getHouse(data={}){//分页查询房源
+				data.cloud='house'
+				data.sort='houseNumber'
+				data.cursor=this.cursor
 				uniCloud.callFunction({
 					name:'get',
-					data:{
-						cloud:'house',
-						limit:10,
-						cursor:1
-					}
+					data:data
 				}).then(res=>{
 					console.log(res)
-					this.houseList=res.result.data
+					this.houseList=[...this.houseList,...res.result.data]
+					this.cursor++
 				}).catch(err=>{
 					console.log(err,'err')
 				})
 			},
-			drawerClick(){
+			drawerClick(){//打开抽屉
 				this.$refs.drawer.open()
 				console.log(213)
 			},
-			addHouse(){
+			addHouse(){//添加房源
 				uni.navigateTo({
 					url:'../addHouse/addHouse'
 				})
+			},
+			gotoHouse(item){//调整详情
+				uni.navigateTo({
+					url:'../houseInfo/houseInfo?id='+item._id
+				})
+			},
+			search(){//搜索
+				let data={
+					houseNumber:this.word
+				}
+				this.cursor=1
+				this.houseList=[]
+				this.getHouse(data)
+			},
+			searchChange(type,result){//筛选条件
+				console.log(this[type],result)
+				this[type]=this[type]==result?'':result
+			},
+			searchCheck(){
+				this.$refs.drawer.close()
+				let data={
+					houseNumber:this.word,
+					state:this.state,
+					purpose:this.purpose,
+				}
+				this.cursor=1
+				this.houseList=[]
+				this.getHouse(data)
 			}
 		}
 	}
@@ -67,7 +120,7 @@
 
 <style lang="scss" scoped>
 .top{
-	top: 0;
+	top:0;
 	position: sticky;
 	display: flex;
 	width: 100vw;
@@ -87,10 +140,35 @@
 		height: 50rpx;
 	}
 }
+.drawer{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	.uni-title{
+		margin: 20rpx 0;
+	}
+	.button{
+		display: flex;
+		justify-content: space-around;
+		button{
+			width: 150rpx;
+			height: 60rpx;
+			line-height: 60rpx;
+			font-size: 28rpx;
+		}
+	}
+}
+.drawerButton{
+	position: fixed;
+	bottom: 60rpx;
+	left: 10%;
+	width: 80%;
+}
 .banner{
 	// height: 2000rpx;
 	width: 100%;
 	display: flex;
+	padding-bottom: 100rpx;
 	// justify-content: space-around;
 	flex-wrap: wrap;
 	.b-box{
@@ -134,6 +212,10 @@
 			opacity: 0.1;
 			margin: 15% auto;
 		}
+	}
+	.b-box2{
+		color: #fff;
+		background: #00aa99;
 	}
 }
 </style>

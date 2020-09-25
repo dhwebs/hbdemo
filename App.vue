@@ -52,4 +52,27 @@ page{
 	color:$uni-text-color-grey ;
 	text-decoration:line-through;
 }
+.uni-form-item{
+	background: #fff;
+	display: flex;
+	height: 80rpx;
+	border-bottom: 1rpx solid #f4f4f4;
+	font-size: 30rpx;
+	.title{
+		width: 180rpx;
+		margin:0 10rpx;
+		line-height: 80rpx;
+	}
+	.uni-input{
+		flex: 1;
+		line-height: 40rpx;
+		margin-top: 20rpx;
+	}
+	button{
+		height: 60rpx;
+		margin: 10rpx 0 0 400rpx;
+		font-size: 28rpx;
+		line-height: 60rpx;
+	}
+}
 </style>

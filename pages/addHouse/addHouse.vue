@@ -20,34 +20,34 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">户型</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'typeIndex')" :value="typeIndex" :range="houseType">
-						<view class="uni-input">{{houseType[typeIndex]}}</view>
+					<picker class="uni-input" @change="bindPickerChange($event,'typeIndex','houseType','houseType')" :value="typeIndex" :range="houseType">
+						<view class="uni-input">{{submitData.houseType}}</view>
 					</picker>
 				</view>
 				<view class="uni-form-item">
 					<view class="title">朝向</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'direIndex')" :value="direIndex" :range="direction">
-						<view class="uni-input">{{direction[direIndex]}}</view>
+					<picker class="uni-input" @change="bindPickerChange($event,'direIndex','orientation','direction')" :value="direIndex" :range="direction">
+						<view class="uni-input">{{submitData.orientation}}</view>
 					</picker>
 				</view>
 				<view class="uni-form-item">
 					<view class="title">装修</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'renIndex')" :value="renIndex" :range="renovation">
-						<text class="uni-input">{{renovation[renIndex]}}</text>
+					<picker class="uni-input" @change="bindPickerChange($event,'renIndex','renovation','renovation')" :value="renIndex" :range="renovation">
+						<text class="uni-input">{{submitData.renovation}}</text>
 					</picker>
 				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="租赁信息">
 				<view class="uni-form-item">
 					<view class="title">用途</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'index')" :value="index" :range="array">
-						<text class="uni-input">{{array[index]}}</text>
+					<picker class="uni-input" @change="bindPickerChange($event,'index','purpose','array')" :value="index" :range="array">
+						<text class="uni-input">{{submitData.purpose}}</text>
 					</picker>
 				</view>
 				<view class="uni-form-item">
 					<view class="title">状态</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'stateIndex')" :value="stateIndex" :range="state">
-						<text class="uni-input">{{state[stateIndex]}}</text>
+					<picker class="uni-input" @change="bindPickerChange($event,'stateIndex','state','state')" :value="stateIndex" :range="state">
+						<text class="uni-input">{{submitData.state}}</text>
 					</picker>
 				</view>
 				<view class="uni-form-item">
@@ -64,8 +64,8 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">押付</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'depIndex')" :value="depIndex" :range="deposit">
-						<text class="uni-input">{{deposit[depIndex]}}</text>
+					<picker class="uni-input" @change="bindPickerChange($event,'depIndex','pledge','deposit')" :value="depIndex" :range="deposit">
+						<text class="uni-input">{{submitData.pledge}}</text>
 					</picker>
 				</view>
 				<view class="uni-form-item">
@@ -111,7 +111,7 @@
 				depIndex:'',
 				state:['未租','已租'],
 				stateIndex:'',
-				
+				update:false,
 				submitData:{
 					building:'',
 					floor:'',
@@ -133,28 +133,65 @@
 				}
 			}
 		},
+		onLoad(option) {
+			if(option.item){
+				let item=JSON.parse(option.item)
+				Object.assign(this.submitData,item)
+				this.update=true
+			}
+		},
 		methods: {
 			change(){
 				
 			},
-			bindPickerChange(e,type) {
+			bindPickerChange(e,type,sbm,arr) {
 				console.log(e)
 				this[type] = e.target.value
+				this.submitData[sbm]=this[arr][e.target.value]
 			},
-			submitHouse(){
+			submitHouse(){//添加房源
+				if(this.update){
+					this.updateHouse()
+					return
+				}
+				uni.showLoading({
+					title:'正在提交'
+				})
 				this.submitData.cloud='house'
-				this.submitData.houseType =this.houseType[this.typeIndex]
-				this.submitData.orientation =this.direction[this.direIndex]
-				this.submitData.state =this.state[this.stateIndex]
-				this.submitData.renovation =this.renovation[this.renIndex]
-				this.submitData.purpose =this.array[this.index]
-				this.submitData.pledge =this.deposit[this.depIndex]
 				uniCloud.callFunction({
 					name:'add',
 					data:this.submitData
 				}).then(res=>{
 					console.log(res)
+					uni.showToast({
+						title:'添加成功'
+					})
 				}).catch(err=>{
+					uni.showToast({
+						title:'添加失败',
+						icon:'none'
+					})
+					console.log(err,'err')
+				})
+			},
+			updateHouse(){//修改房源
+				uni.showLoading({
+					title:'正在提交'
+				})
+				this.submitData.cloud='house'
+				uniCloud.callFunction({
+					name:'update',
+					data:this.submitData
+				}).then(res=>{
+					console.log(res)
+					uni.showToast({
+						title:'修改成功'
+					})
+				}).catch(err=>{
+					uni.showToast({
+						title:'修改失败',
+						icon:'none'
+					})
 					console.log(err,'err')
 				})
 			}
@@ -165,23 +202,6 @@
 <style lang="scss" scoped>
 .box{
 	width: 100vw;
-}
-.uni-form-item{
-	background: #fff;
-	display: flex;
-	height: 80rpx;
-	border-bottom: 1rpx solid #f4f4f4;
-	font-size: 30rpx;
-	.title{
-		width: 120rpx;
-		margin:0 10rpx;
-		line-height: 80rpx;
-	}
-	.uni-input{
-		flex: 1;
-		height: 60rpx;
-		margin-top: 10rpx;
-	}
 }
 .button{
 	width: 90%;

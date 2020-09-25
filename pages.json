@@ -1,6 +1,14 @@
 {
 	"pages": [
 		{
+			"path": "pages/main/main",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh":true,
+				"navigationStyle":"custom"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -43,14 +51,6 @@
 			"style" : {}
 		},
 		{
-			"path": "pages/main/main",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh":true,
-				"navigationStyle":"custom"
-			}
-		},
-		{
 			"path": "pages/house/house",
 			"style": {
 				"navigationBarTitleText": "房间",
@@ -60,6 +60,18 @@
 		}
 	    ,{
             "path" : "pages/addHouse/addHouse",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/houseInfo/houseInfo",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/rentRecord/rentRecord",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/login/login",
             "style" : {}
         }
     ],

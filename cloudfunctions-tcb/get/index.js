@@ -2,7 +2,7 @@
 const db = uniCloud.database()
 exports.main = async (event, context) => {
 	let base=event.cloud
-	let cursor=event.cursor || 0
+	let cursor=(event.cursor-1)>0?(event.cursor-1):0
 	let limit=event.limit || 10
 	let sort=event.sort || 'beginTime'
 	let order=event.order || 'asc'
