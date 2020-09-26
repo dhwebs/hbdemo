@@ -87,8 +87,8 @@
 		"list": [
 			{
 				"pagePath": "pages/main/main",
-				"iconPath": "static/images/tabBar/home.png",
-				"selectedIconPath": "static/images/tabBar/home_selected.png",
+				"iconPath": "static/images/tabBar/signUp.png",
+				"selectedIconPath": "static/images/tabBar/signUp_selected.png",
 				"text": "首页"
 			},
 			{

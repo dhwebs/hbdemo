@@ -4,7 +4,7 @@
 			<view class="t-left">
 				<image src="../../static/images/fj4.jpg" mode=""></image>
 				<view class="topTitle">
-					<view>村头公寓</view>
+					<view>{{user.co}}</view>
 					<view class="text">管理员</view>
 				</view>
 			</view>
@@ -68,6 +68,7 @@
 	export default {
 		data() {
 			return {
+				user:{},
 				allHouse:0,
 				longNotRent:0,
 				shortNotRent:0,
@@ -79,14 +80,37 @@
 			};
 		},
 		created() {
+			this.user=uni.getStorageSync('user')
 		},
 		onPullDownRefresh() {//下拉刷新
+			if(!uni.getStorageSync('user')._id){
+				uni.showModal({
+					title:'请先登录',
+					success: (res) => {
+						uni.navigateTo({
+							url:'../login/login'
+						})
+					}
+				})
+				return
+			}
 			this.getMain()
 			setTimeout(() => {
 				uni.stopPullDownRefresh()
 			},1500)
 		},
 		onShow() {
+			if(!uni.getStorageSync('user')._id){
+				uni.showModal({
+					title:'请先登录',
+					success: (res) => {
+						uni.navigateTo({
+							url:'../login/login'
+						})
+					}
+				})
+				return
+			}
 			this.getMain()
 		},
 		methods:{
@@ -96,13 +120,14 @@
 					url:'../addHouse/addHouse'
 				})
 			},
-			getHouse(cloud,type,state,result){
+			getHouse(cloud,type,state,result,creatTime){
 				uniCloud.callFunction({
 					name:'count',
 					data:{
 						cloud:cloud,
 						purpose:type,
-						state:state
+						state:state,
+						creatTime:creatTime
 					}
 				}).then(res=>{
 					console.log(res,11111)
@@ -125,14 +150,19 @@
 				})
 			},
 			getMain(){
+				let time = new Date()
+				let year=time.getFullYear()
+				let month=(time.getMonth() + 1).toString().padStart("2", "0")
+				let day=time.getDate().toString().padStart("2", "0")
+				time = year + '-' + month + '-' + day
 				this.getHouse('house','','','allHouse')
 				this.getHouse('house','长租','未租','longNotRent')
 				this.getHouse('house','短租','未租','shortNotRent')
 				this.getHouse('house','长租','','longRent')
 				this.getHouse('house','短租','','shortRent')
-				this.getHouse('rent','长租','','todayLong')
-				this.getHouse('rent','短租','','todayShort')
-				this.getHouse('rent','',false,'todayOut')
+				this.getHouse('rent','长租',true,'todayLong',time)
+				this.getHouse('rent','短租',true,'todayShort',time)
+				this.getHouse('rent','',false,'todayOut',time)
 			}
 		}
 	}

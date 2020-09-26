@@ -17,6 +17,11 @@
 					<button :type="state=='未租'?'primary':'default'" @click="searchChange('state','未租')">未租</button>
 					<button :type="state=='已租'?'primary':'default'" @click="searchChange('state','已租')">已租</button>
 				</view>
+				<view class="uni-title">排序</view>
+				<view class="button">
+					<button :type="order=='asc'?'primary':'default'" @click="searchChange('order','asc')">正序</button>
+					<button :type="order=='desc'?'primary':'default'" @click="searchChange('order','desc')">倒序</button>
+				</view>
 			</view>
 			<button type="primary" class="drawerButton" @click="searchCheck">确定</button>
 		</uni-drawer>
@@ -45,6 +50,7 @@
 				cursor:1,
 				state:'',
 				purpose:'',
+				order:'asc',
 			};
 		},
 		created() {
@@ -59,7 +65,13 @@
 			},1500)
 		},
 		onReachBottom() {//触底加载更多
-			this.getHouse()
+			let data={
+				houseNumber:this.word,
+				state:this.state,
+				purpose:this.purpose,
+				order:this.order,
+			}
+			this.getHouse(data)
 		},
 		methods:{
 			getHouse(data={}){//分页查询房源
@@ -109,6 +121,7 @@
 					houseNumber:this.word,
 					state:this.state,
 					purpose:this.purpose,
+					order:this.order,
 				}
 				this.cursor=1
 				this.houseList=[]

@@ -4,7 +4,7 @@ exports.main = async (event, context) => {
 	let base=event.cloud
 	let cursor=(event.cursor-1)>0?(event.cursor-1):0
 	let limit=event.limit || 10
-	let sort=event.sort || 'beginTime'
+	let sort=event.sort || 'creatTime'
 	let order=event.order || 'asc'
 	for(let i in event){
 		if(event[i]===''){

@@ -84,17 +84,12 @@
 				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="资产">
-				<uni-list>
-					<uni-list-item title="标题文字" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png"></uni-list-item>
-					<uni-list-item title="标题文字" note="描述信息" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"></uni-list-item>
-					<uni-list-item title="标题文字" note="描述信息" show-extra-icon="true" :extra-icon="{color: '#4cd964',size: '22',type: 'spinner'}"></uni-list-item>
-				</uni-list>
+				<dh-assets :list="assets" @change="assetsChange"></dh-assets>
 			</uni-collapse-item>
 		</uni-collapse>
 		<button type="primary" class="button" @click="submitHouse">保存</button>
 	</view>
 </template>
-
 <script>
 	export default {
 		data() {
@@ -112,6 +107,7 @@
 				state:['未租','已租'],
 				stateIndex:'',
 				update:false,
+				assets:[],
 				submitData:{
 					building:'',
 					floor:'',
@@ -129,14 +125,16 @@
 					cardDeposit:'',
 					waterNum:'',
 					electricityNum:'',
-					assets:'空调,热水器,床'
+					assets:''
 				}
 			}
 		},
 		onLoad(option) {
 			if(option.item){
 				let item=JSON.parse(option.item)
+				console.log(item)
 				Object.assign(this.submitData,item)
+				this.assets=item.assets
 				this.update=true
 			}
 		},
@@ -157,6 +155,8 @@
 				uni.showLoading({
 					title:'正在提交'
 				})
+				let user=uni.getStorageSync('user')
+				this.submitData.landlordId=user._id
 				this.submitData.cloud='house'
 				uniCloud.callFunction({
 					name:'add',
@@ -194,6 +194,11 @@
 					})
 					console.log(err,'err')
 				})
+			},
+			assetsChange(item){
+				this.assets=item
+				this.submitData.assets = item.join(',')
+				console.log(this.submitData.assets)
 			}
 		}
 	}
@@ -207,4 +212,5 @@
 	width: 90%;
 	margin-top: 40rpx;
 }
+
 </style>

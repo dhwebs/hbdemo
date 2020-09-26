@@ -72,11 +72,7 @@
 				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="资产">
-				<uni-list>
-					<uni-list-item title="标题文字" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png"></uni-list-item>
-					<uni-list-item title="标题文字" note="描述信息" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"></uni-list-item>
-					<uni-list-item title="标题文字" note="描述信息" show-extra-icon="true" :extra-icon="{color: '#4cd964',size: '22',type: 'spinner'}"></uni-list-item>
-				</uni-list>
+				<dh-assets :list="submitData.assets" disabled></dh-assets>
 			</uni-collapse-item>
 		</uni-collapse>
 		<uni-list>
@@ -221,6 +217,7 @@
 				}).then(res=>{
 					console.log(res)
 					this.submitData=res.result.data[0]
+					this.submitData.assets=this.submitData.assets.split(',')
 					if(this.submitData.state=='已租'){
 						this.getRent(id)
 					}

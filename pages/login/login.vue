@@ -3,11 +3,11 @@
 		<view class="banner">
 			<view class="uni-form-item">
 				<view class="title">账号</view>
-				<input class="uni-input" v-model="submitData.account" placeholder-class="infoText" placeholder="输入账号" />
+				<input class="uni-input" v-model="account" placeholder-class="infoText" placeholder="输入账号" />
 			</view>
 			<view class="uni-form-item">
 				<view class="title">密码</view>
-				<input class="uni-input" password v-model="submitData.password" placeholder-class="infoText" placeholder="输入密码" />
+				<input class="uni-input" password v-model="password" placeholder-class="infoText" placeholder="输入密码" />
 			</view>
 			<button type="primary" class="button" @click="login">登录</button>
 		</view>
@@ -18,11 +18,57 @@
 	export default {
 		data() {
 			return {
-				submitData:{
-					password:'',
-					account:''
-				}
+				password:'',
+				account:''
 			};
+		},
+		methods:{
+			login(){
+				if(!this.account){
+					uni.showToast({
+						title:'请输入账号',
+							icon:'none'
+					})
+					return
+				}
+				if(!this.password){
+					uni.showToast({
+						title:'请输入密码',
+							icon:'none'
+					})
+					return
+				}
+				uni.showLoading({
+					title:'加载中',
+					mask:true
+				})
+				uniCloud.callFunction({
+					name:'get',
+					data:{
+						cloud:'user',
+						password:this.password,
+						account:this.account
+					}
+				}).then(res=>{
+					console.log(res)
+					if(!res.result.data || res.result.data.length==0){
+						uni.showToast({
+							title:'账号密码错误',
+							icon:'none'
+						})
+						return
+					}
+					uni.showToast({
+						title:'登录成功'
+					})
+					uni.setStorageSync('user',res.result.data[0])
+					uni.switchTab({
+						url:'../main/main'
+					})
+				}).catch(err=>{
+					console.log(err,'err')
+				})
+			}
 		}
 	}
 </script>

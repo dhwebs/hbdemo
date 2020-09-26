@@ -74,7 +74,8 @@
 					data:{
 						cloud:'rent',
 						cursor:this.cursor,
-						state:this.state
+						state:this.state,
+						order:'desc'
 					}
 				}).then(res=>{
 					console.log(res)
