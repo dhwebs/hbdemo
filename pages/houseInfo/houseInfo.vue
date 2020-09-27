@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="box">
 		<uni-collapse class="box">
 			<uni-collapse-item title="基本信息" :open="true">
 				<view class="uni-form-item">
@@ -75,10 +75,12 @@
 				<dh-assets :list="submitData.assets" disabled></dh-assets>
 			</uni-collapse-item>
 		</uni-collapse>
-		<uni-list>
-			<uni-list-item title="修改房源" @click="changeHouse"></uni-list-item>
-		</uni-list>
-		<uni-collapse class="banner">
+		<view class="banner box">
+			<uni-list>
+				<uni-list-item title="修改房源" @click="changeHouse"></uni-list-item>
+			</uni-list>
+		</view>
+		<uni-collapse class="box">
 			<uni-collapse-item title="添加出租" v-if="submitData.state=='未租'">
 				<view class="uni-form-item">
 					<view class="title">租客姓名</view>
@@ -86,27 +88,27 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">身份证号</view>
-					<input class="uni-input" v-model="addRent.rentIdCard" placeholder-class="infoText" placeholder="输入身份证号" />
+					<input class="uni-input" type="idcard" v-model="addRent.rentIdCard" placeholder-class="infoText" placeholder="输入身份证号" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title">手机号</view>
-					<input class="uni-input" v-model="addRent.rentPhone" placeholder-class="infoText" placeholder="输入手机号" />
+					<input class="uni-input" type="number" v-model="addRent.rentPhone" placeholder-class="infoText" placeholder="输入手机号" />
 				</view>
-				<view class="uni-form-item">
-					<view class="title">开始时间</view>
-					<picker class="uni-input" mode = date @change="checkTime($event,'beginTime')">
+				<picker mode = date @change="checkTime($event,'beginTime')">
+					<view class="uni-form-item">
+						<view class="title">开始时间</view>
 						<text class="uni-input">{{addRent.beginTime}}</text>
-					</picker>
-				</view>
-				<view class="uni-form-item">
-					<view class="title">结束时间</view>
-					<picker class="uni-input" mode = date @change="checkTime($event,'endTime')">
+					</view>
+				</picker>
+				<picker mode = date @change="checkTime($event,'endTime')">
+					<view class="uni-form-item">
+						<view class="title">结束时间</view>
 						<text class="uni-input">{{addRent.endTime}}</text>
-					</picker>
-				</view>
+					</view>
+				</picker>
 				<view class="uni-form-item">
 					<view class="title">押金总额</view>
-					<input class="uni-input" v-model="addRent.deposit" placeholder-class="infoText" placeholder="输入押金总额" />
+					<input class="uni-input" type="digit" v-model="addRent.deposit" placeholder-class="infoText" placeholder="输入押金总额" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title"></view>
@@ -147,7 +149,7 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">本次水</view>
-					<input class="uni-input" v-model="power.waterNum" placeholder-class="infoText" placeholder="输入本次水度读数" />
+					<input class="uni-input" type="digit" v-model="power.waterNum" placeholder-class="infoText" placeholder="输入本次水度读数" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title">上次电</view>
@@ -155,7 +157,7 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">本次电</view>
-					<input class="uni-input" v-model="power.electricityNum" placeholder-class="infoText" placeholder="输入本次电度读数" />
+					<input class="uni-input" type="digit" v-model="power.electricityNum" placeholder-class="infoText" placeholder="输入本次电度读数" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title"></view>

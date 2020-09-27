@@ -148,18 +148,23 @@
 	position: sticky;
 	display: flex;
 	width: 100vw;
-	align-items: center;
-	height: 80rpx;
-	background: #fff;
+	align-items: flex-end;
+	height: 130rpx;
+	background: #fc5380;
 	input{
-		flex: 1;
+		/* #ifndef MP */
+			flex: 1;
+		/* #endif */
+		/* #ifdef MP */
+			width: 62%;
+		/* #endif */
 		height: 60rpx;
 		border-radius: 10rpx;
-		margin-left: 1rpx;
-		border: 1rpx solid #ccc;
+		margin: 0 15rpx 15rpx;
+		border: 1rpx solid #f04d7e;
 	}
 	.top-r{
-		margin:0 20rpx;
+		margin:0 20rpx 25rpx 0;
 		width: 50rpx;
 		height: 50rpx;
 	}

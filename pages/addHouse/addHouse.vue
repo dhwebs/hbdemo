@@ -8,7 +8,7 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">楼层</view>
-					<input class="uni-input" v-model="submitData.floor" placeholder-class="infoText" placeholder="输入楼层" />
+					<input class="uni-input" type="number" v-model="submitData.floor" placeholder-class="infoText" placeholder="输入楼层" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title">门牌号</view>
@@ -16,71 +16,71 @@
 				</view>
 				<view class="uni-form-item">
 					<view class="title">面积</view>
-					<input class="uni-input" v-model="submitData.area" placeholder-class="infoText" placeholder="输入面积" />
+					<input class="uni-input" type="digit" v-model="submitData.area" placeholder-class="infoText" placeholder="输入面积" />
 				</view>
-				<view class="uni-form-item">
-					<view class="title">户型</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'typeIndex','houseType','houseType')" :value="typeIndex" :range="houseType">
+				<picker class="uni-input" @change="bindPickerChange($event,'typeIndex','houseType','houseType')" :value="typeIndex" :range="houseType">
+					<view class="uni-form-item">
+						<view class="title">户型</view>
 						<view class="uni-input">{{submitData.houseType}}</view>
-					</picker>
-				</view>
-				<view class="uni-form-item">
-					<view class="title">朝向</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'direIndex','orientation','direction')" :value="direIndex" :range="direction">
+					</view>
+				</picker>
+				<picker class="uni-input" @change="bindPickerChange($event,'direIndex','orientation','direction')" :value="direIndex" :range="direction">
+					<view class="uni-form-item">
+						<view class="title">朝向</view>
 						<view class="uni-input">{{submitData.orientation}}</view>
-					</picker>
-				</view>
-				<view class="uni-form-item">
-					<view class="title">装修</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'renIndex','renovation','renovation')" :value="renIndex" :range="renovation">
+					</view>
+				</picker>
+				<picker @change="bindPickerChange($event,'renIndex','renovation','renovation')" :value="renIndex" :range="renovation">
+					<view class="uni-form-item">
+						<view class="title">装修</view>
 						<text class="uni-input">{{submitData.renovation}}</text>
-					</picker>
-				</view>
+					</view>
+				</picker>
 			</uni-collapse-item>
 			<uni-collapse-item title="租赁信息">
-				<view class="uni-form-item">
-					<view class="title">用途</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'index','purpose','array')" :value="index" :range="array">
+				<picker class="uni-input" @change="bindPickerChange($event,'index','purpose','array')" :value="index" :range="array">
+					<view class="uni-form-item">
+						<view class="title">用途</view>
 						<text class="uni-input">{{submitData.purpose}}</text>
-					</picker>
-				</view>
-				<view class="uni-form-item">
-					<view class="title">状态</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'stateIndex','state','state')" :value="stateIndex" :range="state">
+					</view>
+				</picker>
+				<picker @change="bindPickerChange($event,'stateIndex','state','state')" :value="stateIndex" :range="state">
+					<view class="uni-form-item">
+						<view class="title">状态</view>
 						<text class="uni-input">{{submitData.state}}</text>
-					</picker>
-				</view>
+					</view>
+				</picker>
 				<view class="uni-form-item">
 					<view class="title">租金</view>
-					<input class="uni-input" v-model="submitData.rent" placeholder-class="infoText" placeholder="输入租金" />
+					<input class="uni-input" type="digit" v-model="submitData.rent" placeholder-class="infoText" placeholder="输入租金" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title">水单价</view>
-					<input class="uni-input" v-model="submitData.waterPrice" placeholder-class="infoText" placeholder="输入水单价(元/吨)" />
+					<input class="uni-input" type="digit" v-model="submitData.waterPrice" placeholder-class="infoText" placeholder="输入水单价(元/吨)" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title">电单价</view>
-					<input class="uni-input" v-model="submitData.electricityPrice" placeholder-class="infoText" placeholder="输入电单价(元/度)" />
+					<input class="uni-input" type="digit" v-model="submitData.electricityPrice" placeholder-class="infoText" placeholder="输入电单价(元/度)" />
 				</view>
-				<view class="uni-form-item">
-					<view class="title">押付</view>
-					<picker class="uni-input" @change="bindPickerChange($event,'depIndex','pledge','deposit')" :value="depIndex" :range="deposit">
+				<picker @change="bindPickerChange($event,'depIndex','pledge','deposit')" :value="depIndex" :range="deposit">
+					<view class="uni-form-item">
+						<view class="title">押付</view>
 						<text class="uni-input">{{submitData.pledge}}</text>
-					</picker>
-				</view>
+					</view>
+				</picker>
 				<view class="uni-form-item">
 					<view class="title">门卡押金</view>
-					<input class="uni-input" v-model="submitData.cardDeposit" placeholder-class="infoText" placeholder="输入押金" />
+					<input class="uni-input" type="digit" v-model="submitData.cardDeposit" placeholder-class="infoText" placeholder="输入押金" />
 				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="能源底数">
 				<view class="uni-form-item">
 					<view class="title">水底数</view>
-					<input class="uni-input" v-model="submitData.waterNum" placeholder-class="infoText" placeholder="输入水底数" />
+					<input class="uni-input" type="digit" v-model="submitData.waterNum" placeholder-class="infoText" placeholder="输入水底数" />
 				</view>
 				<view class="uni-form-item">
 					<view class="title">电底数</view>
-					<input class="uni-input" v-model="submitData.electricityNum" placeholder-class="infoText" placeholder="输入电底数" />
+					<input class="uni-input" type="digit" v-model="submitData.electricityNum" placeholder-class="infoText" placeholder="输入电底数" />
 				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="资产">
@@ -109,7 +109,7 @@
 				update:false,
 				assets:[],
 				submitData:{
-					building:'',
+					building:'村头公寓',
 					floor:'',
 					houseNumber:'',
 					area:'',

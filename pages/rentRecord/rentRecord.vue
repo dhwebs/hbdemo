@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="box">
 		<uni-collapse class="box">
 			<uni-collapse-item v-for="(item,i) in list" :title="item.purpose +' '+ item.building +' '+ item.houseNumber" >
 				<view class="uni-form-item">

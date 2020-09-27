@@ -76,7 +76,7 @@
 <style lang="scss" scoped>
 .box{
 	width: 100vw;
-	height: calc(100vh - 90rpx);
+	height: 100vh;
 	overflow: hidden;
 	background: url(../../static/images/login.jpg);
 	background-size: 100% 100%;
