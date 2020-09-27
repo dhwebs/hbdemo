@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "购票",
+  "usingComponents": {
+    "uni-tabs": "/components/uni-tabs/uni-tabs",
+    "uni-purchase": "/components/uni-purchase/uni-purchase"
+  }
+}

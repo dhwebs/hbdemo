@@ -26,8 +26,8 @@
 			<button type="primary" class="drawerButton" @click="searchCheck">确定</button>
 		</uni-drawer>
 		<view class="banner">
-			<view class="b-box" :class="item.state=='已租'?'b-box2':''" v-for="(item,i) in houseList" :key="i" @click="gotoHouse(item)">
-				<text class="b-b-top1">{{item.state=='未租'?'空':'租'}}</text>
+			<view class="b-box" :class="(item.state=='已租' && item.payState && !item.later)?'b-box2':(item.state=='已租' && !item.payState && !item.later)?'b-box3':item.later?'b-box4':''" v-for="(item,i) in houseList" :key="i" @click="gotoHouse(item)">
+				<text class="b-b-top1">{{item.state=='未租'?'空':item.later?'逾':'租'}}</text>
 				<text class="b-b-top2">{{item.houseNumber}}</text>
 				<text class="b-b-top3">{{item.purpose}}</text>
 				<text class="b-b-top5">租金：{{item.rent}}元/{{item.purpose=='长租'?'月':'日'}}</text>
@@ -83,7 +83,18 @@
 					data:data
 				}).then(res=>{
 					console.log(res)
+					let data = new Date();
+					let month = data.getMonth() + 1;
+					res.result.data.forEach(item=>{
+						if(item.state=='已租'){
+							if(data>new Date(item.endTime)) item.later=true
+							item.billList.forEach(list=>{
+								if(list.month == month) item.payState=list.state
+							})
+						}
+					})
 					this.houseList=[...this.houseList,...res.result.data]
+					console.log(this.houseList)
 					this.cursor++
 				}).catch(err=>{
 					console.log(err,'err')
@@ -229,6 +240,14 @@
 	.b-box2{
 		color: #fff;
 		background: #00aa99;
+	}
+	.b-box3{
+		color: #fff;
+		background: orange;
+	}
+	.b-box4{
+		color: #fff;
+		background: red;
 	}
 }
 </style>

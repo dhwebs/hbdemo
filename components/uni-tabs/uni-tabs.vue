@@ -12,7 +12,9 @@
 		<view class="bottom">
 			<swiper @change="activeChagne2" class="swiper" :current='active' :vertical="position!='top'">
 				<swiper-item class="red" v-for="(item,i) in title">
-					<slot :name="`a${i}`"></slot>
+					<!-- #ifndef MP -->
+						<slot :name="`a${i}`"></slot>
+					<!-- #endif -->
 				</swiper-item>
 			</swiper>
 		</view>

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "uni-chose": "/components/uni-chose/uni-chose",
+    "uni-tabs": "/components/uni-tabs/uni-tabs"
+  }
+}

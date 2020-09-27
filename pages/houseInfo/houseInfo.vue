@@ -162,6 +162,66 @@
 					<button type="primary" @click="checkPower">提交</button>
 				</view>
 			</uni-collapse-item>
+			<uni-collapse-item title="本月账单" v-if="submitData.state=='已租'">
+				<view class="uni-form-item">
+					<view class="title">房租</view>
+					<view class="uni-input">{{billObj.rent}}</view>
+				</view>
+				<view class="uni-form-item" v-if="billObj.deposit">
+					<view class="title">押金</view>
+					<view class="uni-input">{{billObj.deposit}}</view>
+				</view>
+				<view class="uni-form-item">
+					<view class="title">水费</view>
+					<view class="uni-input">{{billObj.waterFree}}</view>
+				</view>
+				<view class="uni-form-item">
+					<view class="title">电费</view>
+					<view class="uni-input">{{billObj.electricityFree}}</view>
+				</view>
+				<view class="uni-form-item">
+					<view class="title">应收</view>
+					<view class="uni-input">{{billObj.money}}</view>
+				</view>
+				<view class="uni-form-item">
+					<view class="title"></view>
+					<button type="primary" @click="outOfAcc('confirm')" v-if="!billObj.confirm">出账</button>
+					<button type="primary" @click="outOfAcc('state')" v-else-if="!billObj.state">收租</button>
+					<button type="primary" v-else>已收</button>
+				</view>
+			</uni-collapse-item>
+			<uni-collapse-item title="所有账单" v-if="submitData.state=='已租'">
+				<uni-collapse>
+					<uni-collapse-item :title="item.month+'月'" v-for="(item,i) in submitData.billList" :key="i">
+						<view class="uni-form-item">
+							<view class="title">房租</view>
+							<view class="uni-input">{{item.rent}}</view>
+						</view>
+						<view class="uni-form-item" v-if="item.deposit">
+							<view class="title">押金</view>
+							<view class="uni-input">{{item.deposit}}</view>
+						</view>
+						<view class="uni-form-item">
+							<view class="title">水费</view>
+							<view class="uni-input">{{item.waterFree}}</view>
+						</view>
+						<view class="uni-form-item">
+							<view class="title">电费</view>
+							<view class="uni-input">{{item.electricityFree}}</view>
+						</view>
+						<view class="uni-form-item">
+							<view class="title">应收</view>
+							<view class="uni-input">{{item.money}}</view>
+						</view>
+						<view class="uni-form-item">
+							<view class="title"></view>
+							<button type="primary" v-if="!item.confirm">待出账</button>
+							<button type="primary" @click="outOfAcc('state')" v-else-if="!item.state">待收租</button>
+							<button type="primary" v-else>已收</button>
+						</view>
+					</uni-collapse-item>
+				</uni-collapse>
+			</uni-collapse-item>
 			<uni-collapse-item title="退房办理" v-if="submitData.state=='已租'">
 				<view class="uni-form-item">
 					<view class="title">退还押金</view>
@@ -177,6 +237,7 @@
 </template>
 
 <script>
+	import utils from '../../static/utils/index.js'
 	export default {
 		data() {
 			return {
@@ -200,13 +261,61 @@
 					electricityNum:'',
 					waterDiff:'',
 					electricityDiff:'',
+				},
+				billObj:{
+					month : '',
+					state :'',
+					rent:'',
+					money:'',
+					deposit:0,
+					waterFree:'', 
+					electricityFree:'',
+					confirm:false
 				}
 			};
 		},
 		onLoad(option) {
 			this.getHouse(option.id)
+			console.log(utils)
 		},
 		methods:{
+			//计算日期之间的月数
+			datemonth(date1,date2){
+				let data = new Date(date1);
+				// 拆分年月日
+				date1 = date1.split('-');
+				// 得到月数
+				date1 = parseInt(date1[0]) * 12 + parseInt(date1[1]);
+				// 拆分年月日
+				date2 = date2.split('-');
+				// 得到月数
+				date2 = parseInt(date2[0]) * 12 + parseInt(date2[1]);
+				let m = Math.abs(date1 - date2);
+				let dataArr = [];
+				//data.setMonth(data.getMonth() + 1, 1); //获取到当前月份,设置月份
+				let month1 = data.getMonth() + 1;
+				dataArr.push({
+						month : month1,
+						state :true,
+						rent:this.submitData.rent,
+						deposit:this.addRent.deposit,
+						waterFree:0, 
+						electricityFree:0,
+						confirm:true,
+						money:utils.accAdd(this.submitData.rent,this.addRent.deposit)
+				})
+				for (let i = 1; i < m; i++) {
+					data.setMonth(data.getMonth() + 1); //每次循环一次 月份值加1
+					let month = data.getMonth() + 1;
+					let obj={
+						month : month,
+						confirm:false,
+						state :false
+					}
+					dataArr.push(obj);
+				}
+				return dataArr;
+			},
 			getHouse(id){//查询房屋信息
 				uniCloud.callFunction({
 					name:'get',
@@ -220,6 +329,20 @@
 					this.submitData.assets=this.submitData.assets.split(',')
 					if(this.submitData.state=='已租'){
 						this.getRent(id)
+						this.billObj={
+							month : '',
+							state :'',
+							rent:this.submitData.rent,
+							deposit:0,
+							waterFree:utils.accMul(this.submitData.waterDiff,this.submitData.waterPrice), 
+							electricityFree:utils.accMul(this.submitData.electricityDiff,this.submitData.electricityPrice)
+						}
+						this.billObj.money=utils.accAdd(this.submitData.rent,utils.accAdd(this.billObj.waterFree,this.billObj.electricityFree))
+						let data = new Date();
+						let month = data.getMonth() + 1;
+						this.submitData.billList.forEach(list=>{
+							if(list.month == month) Object.assign(this.billObj,list)
+						})
 					}
 				}).catch(err=>{
 					console.log(err,'err')
@@ -261,6 +384,7 @@
 				this.addRent.electricityNum=this.submitData.electricityNum
 				this.addRent.building=this.submitData.building
 				this.addRent.houseNumber=this.submitData.houseNumber
+				this.addRent.billList=this.datemonth(this.addRent.beginTime.toString(),this.addRent.endTime.toString())
 				let time = new Date()
 				let year=time.getFullYear()
 				let month=(time.getMonth() + 1).toString().padStart("2", "0")
@@ -279,6 +403,7 @@
 						_id:this.submitData._id,
 						state:'已租',
 						endTime:this.addRent.endTime,
+						billList:this.addRent.billList
 					}
 					this.changeState(data)
 				}).catch(err=>{
@@ -305,8 +430,10 @@
 					cloud:'house',
 					_id:this.submitData._id,
 				}
-				this.power.waterDiff=this.power.waterNum-this.submitData.waterNum
-				this.power.electricityDiff=this.power.electricityNum-this.submitData.electricityNum
+				this.power.waterDiff=utils.accSub(this.power.waterNum,this.submitData.waterNum)
+				this.power.electricityDiff=utils.accSub(this.power.electricityNum,this.submitData.electricityNum) 
+				this.power.lastWaterNum = this.submitData.waterNum
+				this.power.lastElectricityNum = this.submitData.electricityNum
 				Object.assign(this.power,data)
 				uniCloud.callFunction({
 					name:'update',
@@ -323,6 +450,20 @@
 				}).catch(err=>{
 					console.log(err,'err')
 				})
+			},
+			outOfAcc(type){//出账
+				let data = new Date();
+				let month = data.getMonth() + 1;
+				this.billObj[type]=true
+				this.submitData.billList.forEach(list=>{
+					if(list.month == month) Object.assign(list,this.billObj)
+				})
+				let obj={
+					cloud:'house',
+					_id:this.submitData._id,
+					billList:this.submitData.billList
+				}
+				this.changeState(obj)
 			},
 			checkOutRent(){//退房
 				uni.showLoading({
