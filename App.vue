@@ -57,17 +57,15 @@ page{
 	display: flex;
 	width: 100vw;
 	height: 80rpx;
+	align-items: center;
 	border-bottom: 1rpx solid #f4f4f4;
 	font-size: 30rpx;
 	.title{
 		width: 180rpx;
 		margin:0 10rpx;
-		line-height: 80rpx;
 	}
 	.uni-input{
 		flex: 1;
-		line-height: 40rpx;
-		margin-top: 10rpx;
 	}
 	button{
 		height: 60rpx;

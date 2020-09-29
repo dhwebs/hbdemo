@@ -115,6 +115,20 @@
 					<button type="primary" @click="haveRent">提交</button>
 				</view>
 			</uni-collapse-item>
+			<uni-collapse-item title="维修安装">
+				<view class="uni-form-item">
+					<view class="title">维修费用</view>
+					<input class="uni-input" type="digit" v-model="repairMoney" placeholder-class="infoText" placeholder="输入维修费用" />
+				</view>
+				<view class="uni-form-item">
+					<view class="title">维修备注</view>
+					<input class="uni-input" v-model="repairRemark" placeholder-class="infoText" placeholder="输入维修备注" />
+				</view>
+				<view class="uni-form-item">
+					<view class="title"></view>
+					<button type="primary" @click="addRepair">提交</button>
+				</view>
+			</uni-collapse-item>
 			<uni-collapse-item title="租客信息" v-if="submitData.state=='已租'">
 				<view class="uni-form-item">
 					<view class="title">租客姓名</view>
@@ -141,7 +155,6 @@
 					<view class="uni-input">{{addRent.deposit}}</view>
 				</view>
 			</uni-collapse-item>
-			
 			<uni-collapse-item title="能源抄表" v-if="submitData.state=='已租'">
 				<view class="uni-form-item">
 					<view class="title">上次水</view>
@@ -218,7 +231,7 @@
 						<view class="uni-form-item">
 							<view class="title"></view>
 							<button type="primary" v-if="!item.confirm">待出账</button>
-							<button type="primary" @click="outOfAcc('state')" v-else-if="!item.state">待收租</button>
+							<button type="primary" v-else-if="!item.state">待收租</button>
 							<button type="primary" v-else>已收</button>
 						</view>
 					</uni-collapse-item>
@@ -273,7 +286,9 @@
 					waterFree:'', 
 					electricityFree:'',
 					confirm:false
-				}
+				},
+				repairMoney:'',
+				repairRemark:''
 			};
 		},
 		onLoad(option) {
@@ -379,7 +394,9 @@
 				uni.showLoading({
 					title:'正在提交'
 				})
+				let user=uni.getStorageSync('user')
 				this.addRent.cloud='rent'
+				this.addRent.createdId=user._id
 				this.addRent.hsId=this.submitData._id
 				this.addRent.purpose=this.submitData.purpose
 				this.addRent.waterNum=this.submitData.waterNum
@@ -400,6 +417,7 @@
 					uni.showToast({
 						title:'添加成功'
 					})
+					this.addMoney(utils.accAdd(this.addRent.deposit,this.submitData.rent),'收入','租金+押金')
 					let data={
 						cloud:'house',
 						_id:this.submitData._id,
@@ -460,6 +478,9 @@
 				this.submitData.billList.forEach(list=>{
 					if(list.month == month) Object.assign(list,this.billObj)
 				})
+				if(type=='state'){
+					this.addMoney(this.billObj.money,'收入','租金')
+				}
 				let obj={
 					cloud:'house',
 					_id:this.submitData._id,
@@ -490,6 +511,7 @@
 					uni.showToast({
 						title:'退房办理成功'
 					})
+					this.addMoney(this.outRent.backDeposit,'支出','退还押金')
 					let data={
 						cloud:'house',
 						_id:this.submitData._id,
@@ -504,7 +526,73 @@
 					})
 					console.log(err,'err')
 				})
-			}	
+			},
+			addRepair(){//添加维修
+				uni.showLoading({
+					title:'正在提交'
+				})
+				let time = new Date()
+				let year=time.getFullYear()
+				let month=(time.getMonth() + 1).toString().padStart("2", "0")
+				let day=time.getDate().toString().padStart("2", "0")
+				let creatTime = year + '-' + month + '-' + day
+				let user=uni.getStorageSync('user')
+				uniCloud.callFunction({
+					name:'add',
+					data:{
+						cloud:'repair',
+						creatTime,
+						repairMoney:this.repairMoney,
+						repairRemark:this.repairRemark,
+						houseNumber:this.submitData.houseNumber,
+						building:this.submitData.building,
+						purpose:this.submitData.purpose,
+						hsId:this.submitData._id,
+						createdId:user._id
+					}
+				}).then(res=>{
+					console.log(res)
+					uni.showToast({
+						title:'添加成功'
+					})
+					this.addMoney(this.repairMoney,'支出','维修安装')
+					this.repairMoney=''
+					this.repairRemark=''
+				}).catch(err=>{
+					uni.showToast({
+						title:'添加失败',
+						icon:'none'
+					})
+					console.log(err,'err')
+				})
+			},
+			addMoney(money,income,type){//添加收支
+				let time = new Date()
+				let year=time.getFullYear()
+				let month=(time.getMonth() + 1).toString().padStart("2", "0")
+				let day=time.getDate().toString().padStart("2", "0")
+				let creatTime = year + '-' + month + '-' + day
+				let user=uni.getStorageSync('user')
+				uniCloud.callFunction({
+					name:'add',
+					data:{
+						cloud:'money',
+						creatTime,
+						money:money,
+						type:type,
+						income:income,
+						houseNumber:this.submitData.houseNumber,
+						building:this.submitData.building,
+						purpose:this.submitData.purpose,
+						hsId:this.submitData._id,
+						createdId:user._id
+					}
+				}).then(res=>{
+					console.log(res)
+				}).catch(err=>{
+					console.log(err,'err')
+				})
+			}
 		}
 	}
 </script>

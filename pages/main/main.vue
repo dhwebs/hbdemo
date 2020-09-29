@@ -1,14 +1,14 @@
 <template>
 	<view class="box">
 		<view class="top">
-			<view class="t-left">
+			<view class="t-left" @click="gotoLogin">
 				<image src="../../static/images/fj4.jpg" mode=""></image>
 				<view class="topTitle">
 					<view>{{user.co}}</view>
 					<view class="text">管理员</view>
 				</view>
 			</view>
-			<!-- <view class="button">办理业务</view> -->
+			<view class="button" @click="gotoClient">去客户端</view>
 		</view>
 		<view class="banner">
 			<view class="b-top">空置房屋</view>
@@ -22,7 +22,7 @@
 					<view class="b-little">短租</view>
 				</view>
 				<view class="b-b-banner">
-					<view>{{((longNotRent+shortNotRent)*100/allHouse).toFixed(2)}}%</view>
+					<view>{{((longNotRent+shortNotRent)*100/allHouse).toFixed(2)>0?((longNotRent+shortNotRent)*100/allHouse).toFixed(2) : 0}}%</view>
 					<view class="b-little">空房率</view>
 				</view>
 			</view>
@@ -100,6 +100,7 @@
 			},1500)
 		},
 		onShow() {
+			this.user=uni.getStorageSync('user')
 			if(!uni.getStorageSync('user')._id){
 				uni.showModal({
 					title:'请先登录',
@@ -121,29 +122,18 @@
 				})
 			},
 			getHouse(cloud,type,state,result,creatTime){
+				let user=uni.getStorageSync('user')
 				uniCloud.callFunction({
 					name:'count',
 					data:{
 						cloud:cloud,
 						purpose:type,
 						state:state,
-						creatTime:creatTime
+						creatTime:creatTime,
+						createdId:user._id
 					}
 				}).then(res=>{
 					console.log(res,11111)
-					this[result]=res.result.total
-				}).catch(err=>{
-					console.log(err,'err')
-				})
-			},
-			getRent(type,state,result){
-				uniCloud.callFunction({
-					name:'count',
-					data:{
-						cloud:'rent',
-						purpose:type,
-					}
-				}).then(res=>{
 					this[result]=res.result.total
 				}).catch(err=>{
 					console.log(err,'err')
@@ -163,6 +153,28 @@
 				this.getHouse('rent','长租',true,'todayLong',time)
 				this.getHouse('rent','短租',true,'todayShort',time)
 				this.getHouse('rent','',false,'todayOut',time)
+			},
+			gotoClient(){//跳转客户端
+				uni.navigateTo({
+					url:'../notRent/notRent'
+				})
+			},
+			gotoLogin(){//退出登录
+				uni.showModal({
+					title:'是否退出登录？',
+					success: (res) => {
+						if(res.confirm){
+							uni.navigateTo({
+								url:'../login/login'
+							})
+						}else{
+							wx.showToast({
+								icon:'none',
+								title:'已取消'
+							})
+						}
+					}
+				})
 			}
 		}
 	}

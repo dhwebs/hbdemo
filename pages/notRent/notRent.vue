@@ -1,21 +1,27 @@
 <template>
-	<view>
+	<view style="width: 100vw;">
 		<view class="top">
 			<input type="text" v-model="word" placeholder="搜索房间" @confirm="search"/>
 			<image class="top-r" src="/static/images/search/icon2.png" mode="aspectFit" @click="drawerClick"></image>
 		</view>
+		<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
+			<swiper-item class="swiper_item">
+				<image src="../../static/images/fj3.jpg" mode=""></image>
+			</swiper-item>
+			<swiper-item class="swiper_item">
+				<image src="../../static/images/fj4.jpg" mode="aspectFill"></image>
+			</swiper-item>
+			<swiper-item class="swiper_item">
+				<image src="../../static/images/fj8.jpg" mode=""></image>
+			</swiper-item>
+		</swiper>
 		<uni-drawer ref="drawer" mode="right">
 			<view style="padding:30rpx;" class="drawer">
-				<view class="uni-title">筛选条件</view>
+				<view class="uni-title">筛选条件<text @click="gotoLogin" style="display: inline-block;width:220rpx;color:#007AFF;text-align: right;">切换后台</text></view>
 				<view class="uni-title">用途</view>
 				<view class="button">
 					<button :type="purpose=='长租'?'primary':'default'" @click="searchChange('purpose','长租')">长租</button>
 					<button :type="purpose=='短租'?'primary':'default'" @click="searchChange('purpose','短租')">短租</button>
-				</view>
-				<view class="uni-title">状态</view>
-				<view class="button">
-					<button :type="state=='未租'?'primary':'default'" @click="searchChange('state','未租')">未租</button>
-					<button :type="state=='已租'?'primary':'default'" @click="searchChange('state','已租')">已租</button>
 				</view>
 				<view class="uni-title">排序</view>
 				<view class="button">
@@ -26,16 +32,17 @@
 			<button type="primary" class="drawerButton" @click="searchCheck">确定</button>
 		</uni-drawer>
 		<view class="banner">
-			<view class="b-box" :class="(item.state=='已租' && item.payState && !item.later)?'b-box2':(item.state=='已租' && !item.payState && !item.later)?'b-box3':item.later?'b-box4':''" v-for="(item,i) in houseList" :key="i" @click="gotoHouse(item)">
-				<text class="b-b-top1">{{item.state=='未租'?'空':item.later?'逾':'租'}}</text>
-				<text class="b-b-top2">{{item.houseNumber}}</text>
-				<text class="b-b-top3">{{item.purpose}}</text>
-				<text class="b-b-top5">租金：{{item.rent}}元/{{item.purpose=='长租'?'月':'日'}}</text>
-				<text class="b-b-top4">到期时间 : {{item.state=='未租'?'空置未租':item.endTime}}</text>
-			</view>
-			
-			<view class="b-box" @click="addHouse">
-				<image src="../../static/images/plus.png"></image>
+			<view class="b-box" v-for="(item,i) in houseList" :key="i" @click="gotoInfo(item)">
+				<image src="https://7368-shop-886748-1302750918.tcb.qcloud.la/image/listing01.jpg" mode=""></image>
+				<view class="b-b-right">
+					<view>{{item.building}} {{item.houseNumber}} {{item.houseType}}</view>
+					<view>{{item.renovation}}</view>
+					<view>{{item.pledge}}</view>
+					<view class="b-b-b">
+						<view>{{item.purpose}}</view>
+						<view style="color:red">{{item.rent}}元/{{item.purpose=='长租'?'月':'日'}}</view>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -48,7 +55,6 @@
 				word:'',
 				houseList:[],
 				cursor:1,
-				state:'',
 				purpose:'',
 				order:'asc',
 			};
@@ -67,7 +73,6 @@
 		onReachBottom() {//触底加载更多
 			let data={
 				houseNumber:this.word,
-				state:this.state,
 				purpose:this.purpose,
 				order:this.order,
 			}
@@ -75,31 +80,26 @@
 		},
 		methods:{
 			getHouse(data={}){//分页查询房源
-				let user=uni.getStorageSync('user')
+				uni.showLoading({
+					title:'加载中',
+					mask:true
+				})
 				data.cloud='house'
 				data.sort='houseNumber'
 				data.cursor=this.cursor
-				data.createdId=user._id
+				data.state='未租'
 				uniCloud.callFunction({
 					name:'get',
 					data:data
 				}).then(res=>{
 					console.log(res)
-					let data = new Date();
-					let month = data.getMonth() + 1;
-					res.result.data.forEach(item=>{
-						if(item.state=='已租'){
-							if(data>new Date(item.endTime)) item.later=true
-							item.billList.forEach(list=>{
-								if(list.month == month) item.payState=list.state
-							})
-						}
-					})
 					this.houseList=[...this.houseList,...res.result.data]
 					console.log(this.houseList)
+					wx.hideLoading()
 					this.cursor++
 				}).catch(err=>{
 					console.log(err,'err')
+					wx.hideLoading()
 				})
 			},
 			drawerClick(){//打开抽屉
@@ -109,11 +109,6 @@
 			addHouse(){//添加房源
 				uni.navigateTo({
 					url:'../addHouse/addHouse'
-				})
-			},
-			gotoHouse(item){//调整详情
-				uni.navigateTo({
-					url:'../houseInfo/houseInfo?id='+item._id
 				})
 			},
 			search(){//搜索
@@ -139,6 +134,24 @@
 				this.cursor=1
 				this.houseList=[]
 				this.getHouse(data)
+			},
+			gotoInfo(item){//跳转详情
+				console.log(item,1111)
+				uni.navigateTo({
+					url:'../notRentInfo/notRentInfo?id='+item._id
+				})
+			},
+			gotoLogin(){//切换至后台
+				console.log(111)
+				if(!uni.getStorageSync('user')._id){
+					uni.navigateTo({
+						url:'../login/login'
+					})
+				}else{
+					uni.switchTab({
+						url:'../main/main'
+					})
+				}
 			}
 		}
 	}
@@ -147,12 +160,13 @@
 <style lang="scss" scoped>
 .top{
 	top:0;
+	z-index: 999;
 	position: sticky;
 	display: flex;
 	width: 100vw;
 	align-items: flex-end;
 	height: 130rpx;
-	background: #fc5380;
+	background: #55aaff;
 	input{
 		/* #ifndef MP */
 			flex: 1;
@@ -163,12 +177,25 @@
 		height: 60rpx;
 		border-radius: 10rpx;
 		margin: 0 15rpx 15rpx;
-		border: 1rpx solid #f04d7e;
+		border: 1rpx solid #0099ff;
 	}
 	.top-r{
 		margin:0 20rpx 25rpx 0;
 		width: 50rpx;
 		height: 50rpx;
+	}
+}
+.swiper{
+	width: 100%;
+	height: 400rpx;
+	z-index: -1;
+	.swiper_item{
+		width: 100%;
+		image{
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+		}
 	}
 }
 .drawer{
@@ -195,6 +222,12 @@
 	left: 10%;
 	width: 80%;
 }
+.drawerButton2{
+	position: fixed;
+	bottom:0rpx;
+	left: 10%;
+	width: 80%;
+}
 .banner{
 	// height: 2000rpx;
 	width: 100%;
@@ -203,58 +236,28 @@
 	// justify-content: space-around;
 	flex-wrap: wrap;
 	.b-box{
-		// color:#fff;
-		width: 46%;
-		height: 280rpx;
-		// background: orange;
-		// background: red;
-		// background: #00aa99;
+		width: 96%;
+		height: 250rpx;
 		background: #fff;
 		margin: 20rpx 2% 0;
-		
 		border-radius: 20rpx;
 		display: flex;
-		flex-direction: column;
 		justify-content: space-between;
-		.b-b-top1{
-			text-align: right;
-			margin-right: 15rpx;
-		}
-		.b-b-top2{
-			text-align: center;
-			font-size:56rpx;
-		}
-		.b-b-top3{
-			font-size: 33rpx;
-			text-align: center;
-		}
-		.b-b-top4{
-			font-size: 26rpx;
-			text-align: center;
-			margin-bottom: 20rpx;
-		}
-		.b-b-top5{
-			font-size: 26rpx;
-			text-align: center;
-		}
 		image{
-			width: 50%;
-			height: 70%;
-			opacity: 0.1;
-			margin: 15% auto;
+			width: 250rpx;
+			height: 100%;
+			border-radius: 15rpx;
 		}
-	}
-	.b-box2{
-		color: #fff;
-		background: #00aa99;
-	}
-	.b-box3{
-		color: #fff;
-		background: orange;
-	}
-	.b-box4{
-		color: #fff;
-		background: red;
+		.b-b-right{
+			flex: 1;
+			margin-left: 20rpx;
+			line-height: 60rpx;
+			.b-b-b{
+				width: 90%;
+				display: flex;
+				justify-content: space-between;
+			}
+		}
 	}
 }
 </style>

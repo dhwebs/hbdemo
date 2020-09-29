@@ -1,6 +1,12 @@
 {
 	"pages": [
 		{
+			"path" : "pages/notRent/notRent",
+			"style" : {
+				"navigationStyle":"custom"
+			}
+		},
+		{
 			"path": "pages/main/main",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -77,10 +83,24 @@
 							"navigationStyle":"custom"
 						}
         }
+        ,{
+            "path" : "pages/repairRecord/repairRecord",
+            "style" : {
+							"navigationBarTitleText": "维修记录"}
+        }
+        ,{
+            "path" : "pages/moneyRecord/moneyRecord",
+            "style" : {"navigationBarTitleText": "收支记录"}
+        },
+				
+				{
+            "path" : "pages/notRentInfo/notRentInfo",
+            "style" : {"navigationStyle":"custom"}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "村头公寓",
+		"navigationBarTitleText": "轻记",
 		"navigationBarBackgroundColor": "#fc5380",
 		"backgroundColor": "#FFFFFF"
 	},

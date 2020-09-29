@@ -36,6 +36,10 @@
 						<text class="uni-input">{{submitData.renovation}}</text>
 					</view>
 				</picker>
+				<view class="uni-form-item" @click="chooseAddress">
+					<view class="title">地址</view>
+					<view class="uni-input">{{submitData.addressName}}</view>
+				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="租赁信息">
 				<picker class="uni-input" @change="bindPickerChange($event,'index','purpose','array')" :value="index" :range="array">
@@ -88,6 +92,7 @@
 			</uni-collapse-item>
 		</uni-collapse>
 		<button type="primary" class="button" @click="submitHouse">保存</button>
+		<!-- <button type="primary" class="button" @click="uploadImg">上传图片</button> -->
 	</view>
 </template>
 <script>
@@ -109,7 +114,7 @@
 				update:false,
 				assets:[],
 				submitData:{
-					building:'村头公寓',
+					building:'',
 					floor:'',
 					houseNumber:'',
 					area:'',
@@ -125,7 +130,11 @@
 					cardDeposit:'',
 					waterNum:'',
 					electricityNum:'',
-					assets:''
+					assets:'',
+					address:'',
+					latitude:'',
+					longitude:'',
+					addressName:''
 				}
 			}
 		},
@@ -137,6 +146,15 @@
 				this.assets=item.assets
 				this.update=true
 			}
+			if(this.update){
+				uni.setNavigationBarTitle({
+					title: '修改房间'
+				})
+			}else {
+				uni.setNavigationBarTitle({
+					title: '添加房间'
+				})
+			}
 		},
 		methods: {
 			change(){
@@ -147,6 +165,20 @@
 				this[type] = e.target.value
 				this.submitData[sbm]=this[arr][e.target.value]
 			},
+			chooseAddress(){//选择地址
+				uni.chooseLocation({
+					success: (res)=> {
+						this.submitData.addressName=res.name
+						this.submitData.address=res.address
+						this.submitData.latitude=res.latitude
+						this.submitData.longitude=res.longitude
+						console.log('位置名称：' + res.name);
+						console.log('详细地址：' + res.address,this.submitData.address);
+						console.log('纬度：' + res.latitude);
+						console.log('经度：' + res.longitude);
+					}
+				});
+			},
 			submitHouse(){//添加房源
 				if(this.update){
 					this.updateHouse()
@@ -156,7 +188,7 @@
 					title:'正在提交'
 				})
 				let user=uni.getStorageSync('user')
-				this.submitData.landlordId=user._id
+				this.submitData.createdId=user._id
 				this.submitData.cloud='house'
 				uniCloud.callFunction({
 					name:'add',
@@ -166,6 +198,7 @@
 					uni.showToast({
 						title:'添加成功'
 					})
+					uni.navigateBack()
 				}).catch(err=>{
 					uni.showToast({
 						title:'添加失败',
@@ -187,6 +220,7 @@
 					uni.showToast({
 						title:'修改成功'
 					})
+					uni.navigateBack()
 				}).catch(err=>{
 					uni.showToast({
 						title:'修改失败',
@@ -199,6 +233,28 @@
 				this.assets=item
 				this.submitData.assets = item.join(',')
 				console.log(this.submitData.assets)
+			},
+			uploadImg(){
+				uni.chooseImage({
+					count: 3,
+					success:async (res)=> {
+						console.log(res);
+						if (res.tempFilePaths.length > 0) {
+							let filePath = res.tempFilePaths[0]
+							//进行上传操作
+							const result = await uniCloud.uploadFile({
+								filePath: filePath,
+								cloudPath: filePath,
+								onUploadProgress: (progressEvent)=> {
+									console.log(progressEvent);
+									var percentCompleted = Math.round(
+										(progressEvent.loaded * 100) / progressEvent.total
+									);
+								}
+							});
+						}
+					}
+				})
 			}
 		}
 	}

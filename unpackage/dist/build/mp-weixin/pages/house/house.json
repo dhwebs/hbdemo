@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "房间",
-  "enablePullDownRefresh": true,
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "uni-drawer": "/components/uni-drawer/uni-drawer"
-  }
-}

@@ -53,7 +53,16 @@
 			};
 		},
 		onLoad(option) {
-			this.state=option.state?false:''
+			this.state=option.state?false:true
+			if(this.state){
+				uni.setNavigationBarTitle({
+					title: '租房记录'
+				})
+			}else {
+				uni.setNavigationBarTitle({
+					title: '退房记录'
+				})
+			}
 			this.getList()
 		},
 		onPullDownRefresh() {//下拉刷新
@@ -69,13 +78,15 @@
 		},
 		methods:{
 			getList(){
+				let user=uni.getStorageSync('user')
 				uniCloud.callFunction({
 					name:'get',
 					data:{
 						cloud:'rent',
 						cursor:this.cursor,
 						state:this.state,
-						order:'desc'
+						order:'desc',
+						createdId:user._id
 					}
 				}).then(res=>{
 					console.log(res)
@@ -84,7 +95,7 @@
 				}).catch(err=>{
 					console.log(err,'err')
 				})
-			}
+			},
 		}
 	}
 </script>
