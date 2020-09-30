@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "uni-purchase": "/components/uni-purchase/uni-purchase"
+  }
+}

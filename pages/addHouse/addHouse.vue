@@ -234,27 +234,51 @@
 				this.submitData.assets = item.join(',')
 				console.log(this.submitData.assets)
 			},
-			uploadImg(){
+			uploadImg() {
 				uni.chooseImage({
-					count: 3,
-					success:async (res)=> {
-						console.log(res);
-						if (res.tempFilePaths.length > 0) {
-							let filePath = res.tempFilePaths[0]
-							//进行上传操作
-							const result = await uniCloud.uploadFile({
-								filePath: filePath,
-								cloudPath: filePath,
-								onUploadProgress: (progressEvent)=> {
-									console.log(progressEvent);
-									var percentCompleted = Math.round(
-										(progressEvent.loaded * 100) / progressEvent.total
-									);
+					count:3,
+					success: async res => {
+						for(let i=0;i<res.tempFilePaths.length;i++){
+							let ext = res.tempFiles[i].name.split('.').pop()
+							console.log('item',res.tempFilePaths[i])
+							let failId=await uniCloud.uploadFile({
+								filePath: res.tempFilePaths[i],
+								cloudPath: Date.now() + '.' + ext,
+								onUploadProgress(e) {
+									console.log(e)
 								}
-							});
+							})
+							console.log(failId)
 						}
+					},
+					fail: () => {
 					}
 				})
+			},
+			showImg() {
+				if (!this.fileID) {
+					uni.showModal({
+						content: '请先上传一张图片',
+						showCancel: false
+					})
+					return
+				}
+				// 腾讯云需要获取临时链接
+				uniCloud.getTempFileURL({
+					fileList: [this.fileID],
+					success: (res) => {
+						this.imgUrl = res.fileList[0].tempFileURL
+						console.log(res);
+					},
+					fail: () => {
+						uni.showModal({
+							content: '获取临时链接失败',
+							showCancel: false
+						})
+					}
+				})
+				// 阿里云可以直接使用fileID进行展示
+				// this.imgUrl = this.fileID
 			}
 		}
 	}

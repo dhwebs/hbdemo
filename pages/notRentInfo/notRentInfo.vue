@@ -150,9 +150,12 @@
 				}
 				console.log(this.userPhone)
 				uni.makePhoneCall({
-					phoneNumber: this.userPhone,
+					phoneNumber: this.userPhone.toString(),
 					success: (res) => {
 						console.log(res)
+					},
+					fail:(err)=>{
+						console.log(err)
 					}
 				})
 			}
@@ -179,7 +182,7 @@
 		/* #endif */
 		height: 60rpx;
 		border-radius: 10rpx;
-		margin: 0 65rpx 15rpx;
+		margin: 0 65rpx 15rpx 0;
 		text-align: right;
 		color: #fff;
 	}

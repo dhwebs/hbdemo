@@ -17,7 +17,8 @@
 		</swiper>
 		<uni-drawer ref="drawer" mode="right">
 			<view style="padding:30rpx;" class="drawer">
-				<view class="uni-title">筛选条件<text @click="gotoLogin" style="display: inline-block;width:220rpx;color:#007AFF;text-align: right;">切换后台</text></view>
+				<view @click="gotoLogin" class="uni-title" style="color:#007AFF;">切换后台</view>
+				<view class="uni-title">筛选条件</view>
 				<view class="uni-title">用途</view>
 				<view class="button">
 					<button :type="purpose=='长租'?'primary':'default'" @click="searchChange('purpose','长租')">长租</button>

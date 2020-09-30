@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "首页",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "uni-icons": "/components/uni-icons/uni-icons",
+    "uni-plate-head": "/components/uni-plate-head/uni-plate-head",
+    "uni-activity": "/components/uni-activity/uni-activity",
+    "uni-purchase": "/components/uni-purchase/uni-purchase"
+  }
+}
