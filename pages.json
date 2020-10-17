@@ -1,16 +1,16 @@
 {
 	"pages": [
 		{
-			"path" : "pages/notRent/notRent",
-			"style" : {
-				"navigationStyle":"custom"
-			}
-		},
-		{
 			"path": "pages/main/main",
 			"style": {
 				"navigationBarTitleText": "首页",
 				"enablePullDownRefresh":true,
+				"navigationStyle":"custom"
+			}
+		},
+		{
+			"path" : "pages/notRent/notRent",
+			"style" : {
 				"navigationStyle":"custom"
 			}
 		},
@@ -116,14 +116,14 @@
 			},
 			{
 				"pagePath": "pages/house/house",
-				"iconPath": "static/images/tabBar/房间.png",
-				"selectedIconPath": "static/images/tabBar/房间1.png",
+				"iconPath": "static/images/tabBar/house.png",
+				"selectedIconPath": "static/images/tabBar/house1.png",
 				"text": "房间"
 			},
 			{
 				"pagePath": "pages/center/center",
-				"iconPath": "static/images/tabBar/记录.png",
-				"selectedIconPath": "static/images/tabBar/记录1.png",
+				"iconPath": "static/images/tabBar/jilu.png",
+				"selectedIconPath": "static/images/tabBar/jilu1.png",
 				"text": "记录"
 			}
 		]

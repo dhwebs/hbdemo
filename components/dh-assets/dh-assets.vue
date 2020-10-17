@@ -2,35 +2,35 @@
 	<view>
 		<view class="assetsBox">
 			<view class="iconBox" @click="iconClick('冰箱')">
-				<image :src="list.indexOf('冰箱')>-1 ? '../../static/images/assetsIcon/冰箱1.png' : '../../static/images/assetsIcon/冰箱.png'" mode=""></image>
+				<image :src="list.indexOf('冰箱')>-1 ? '../../static/images/assetsIcon/bx1.png' : '../../static/images/assetsIcon/bx.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('冰箱')>-1 ? '#1296db':'#bfbfbf'}">冰箱</text>
 			</view>
 			<view class="iconBox" @click="iconClick('电视')">
-				<image :src="list.indexOf('电视')>-1 ? '../../static/images/assetsIcon/电视1.png' : '../../static/images/assetsIcon/电视.png'" mode=""></image>
+				<image :src="list.indexOf('电视')>-1 ? '../../static/images/assetsIcon/tv1.png' : '../../static/images/assetsIcon/tv.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('电视')>-1 ? '#1296db':'#bfbfbf'}">电视</text>
 			</view>
 			<view class="iconBox" @click="iconClick('空调')">
-				<image :src="list.indexOf('空调')>-1 ? '../../static/images/assetsIcon/空调1.png' : '../../static/images/assetsIcon/空调.png'" mode=""></image>
+				<image :src="list.indexOf('空调')>-1 ? '../../static/images/assetsIcon/kt1.png' : '../../static/images/assetsIcon/kt.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('空调')>-1 ? '#1296db':'#bfbfbf'}">空调</text>
 			</view>
 			<view class="iconBox" @click="iconClick('床')">
-				<image :src="list.indexOf('床')>-1 ? '../../static/images/assetsIcon/床1.png' : '../../static/images/assetsIcon/床.png'" mode=""></image>
+				<image :src="list.indexOf('床')>-1 ? '../../static/images/assetsIcon/bed1.png' : '../../static/images/assetsIcon/bed.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('床')>-1 ? '#1296db':'#bfbfbf'}">床</text>
 			</view>
 			<view class="iconBox" @click="iconClick('凳子')">
-				<image :src="list.indexOf('凳子')>-1 ? '../../static/images/assetsIcon/凳子1.png' : '../../static/images/assetsIcon/凳子.png'" mode=""></image>
+				<image :src="list.indexOf('凳子')>-1 ? '../../static/images/assetsIcon/dz1.png' : '../../static/images/assetsIcon/dz.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('凳子')>-1 ? '#1296db':'#bfbfbf'}">凳子</text>
 			</view>
 			<view class="iconBox" @click="iconClick('衣柜')">
-				<image :src="list.indexOf('衣柜')>-1 ? '../../static/images/assetsIcon/衣柜1.png' : '../../static/images/assetsIcon/衣柜.png'" mode=""></image>
+				<image :src="list.indexOf('衣柜')>-1 ? '../../static/images/assetsIcon/yg1.png' : '../../static/images/assetsIcon/yg.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('衣柜')>-1 ? '#1296db':'#bfbfbf'}">衣柜</text>
 			</view>
 			<view class="iconBox" @click="iconClick('桌子')">
-				<image :src="list.indexOf('桌子')>-1 ? '../../static/images/assetsIcon/桌子1.png' : '../../static/images/assetsIcon/桌子.png'" mode=""></image>
+				<image :src="list.indexOf('桌子')>-1 ? '../../static/images/assetsIcon/zz1.png' : '../../static/images/assetsIcon/zz.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('桌子')>-1 ? '#1296db':'#bfbfbf'}">桌子</text>
 			</view>
 			<view class="iconBox" @click="iconClick('热水器')">
-				<image :src="list.indexOf('热水器')>-1 ? '../../static/images/assetsIcon/热水器1.png' : '../../static/images/assetsIcon/热水器.png'" mode=""></image>
+				<image :src="list.indexOf('热水器')>-1 ? '../../static/images/assetsIcon/rsq1.png' : '../../static/images/assetsIcon/rsq.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('热水器')>-1 ? '#1296db':'#bfbfbf'}">热水器</text>
 			</view>
 			<view class="iconBox" @click="iconClick('WiFi')">
@@ -38,7 +38,7 @@
 				<text :style="{'color': list.indexOf('WiFi')>-1 ? '#1296db':'#bfbfbf'}">WiFi</text>
 			</view>
 			<view class="iconBox" @click="iconClick('沙发')">
-				<image :src="list.indexOf('沙发')>-1 ? '../../static/images/assetsIcon/沙发1.png' : '../../static/images/assetsIcon/沙发.png'" mode=""></image>
+				<image :src="list.indexOf('沙发')>-1 ? '../../static/images/assetsIcon/sf1.png' : '../../static/images/assetsIcon/sf.png'" mode=""></image>
 				<text :style="{'color': list.indexOf('沙发')>-1 ? '#1296db':'#bfbfbf'}">沙发</text>
 			</view>
 		</view>
