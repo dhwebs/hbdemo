@@ -130,6 +130,8 @@
 					cardDeposit:'',
 					waterNum:'',
 					electricityNum:'',
+					water:[],
+					electricity:[],
 					assets:'',
 					address:'',
 					latitude:'',
@@ -179,7 +181,12 @@
 					}
 				});
 			},
+			
 			submitHouse(){//添加房源
+				let day = new Date();
+				let today=day.getFullYear()+"-" + (day.getMonth()+1).toString().padStart(2,'0') + "-" + day.getDate().toString().padStart(2,'0');
+				this.submitData.water.push({date:today,num:this.submitData.waterNum})
+				this.submitData.electricity.push({date:today,num:this.submitData.electricityNum})
 				if(this.update){
 					this.updateHouse()
 					return
@@ -211,6 +218,9 @@
 				uni.showLoading({
 					title:'正在提交'
 				})
+				if(this.submitData.assets.constructor == Array) {
+					this.submitData.assets = this.submitData.assets.join(',')
+				}
 				this.submitData.cloud='house'
 				uniCloud.callFunction({
 					name:'update',

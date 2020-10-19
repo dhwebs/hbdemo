@@ -65,10 +65,12 @@
 				<view class="uni-form-item">
 					<view class="title">水底数</view>
 					<view class="uni-input">{{submitData.waterNum}}</view>
+					<button type="primary" @click="statistics('水')" style="margin-right: 10rpx;">统计</button>
 				</view>
 				<view class="uni-form-item">
 					<view class="title">电底数</view>
 					<view class="uni-input">{{submitData.electricityNum}}</view>
+					<button type="primary" @click="statistics('电')" style="margin-right: 10rpx;">统计</button>
 				</view>
 			</uni-collapse-item>
 			<uni-collapse-item title="资产">
@@ -177,7 +179,7 @@
 					<button type="primary" @click="checkPower">提交</button>
 				</view>
 			</uni-collapse-item>
-			<uni-collapse-item title="本月账单" v-if="submitData.state=='已租'">
+			<uni-collapse-item title="本月账单" v-if="submitData.state=='已租' && submitData.purpose=='长租'">
 				<view class="uni-form-item">
 					<view class="title">房租</view>
 					<view class="uni-input">{{billObj.rent}}</view>
@@ -205,7 +207,7 @@
 					<button type="primary" v-else>已收</button>
 				</view>
 			</uni-collapse-item>
-			<uni-collapse-item title="所有账单" v-if="submitData.state=='已租'">
+			<uni-collapse-item title="所有账单" v-if="submitData.state=='已租' && submitData.purpose=='长租'">
 				<uni-collapse>
 					<uni-collapse-item :title="item.month+'月'" v-for="(item,i) in submitData.billList" :key="i">
 						<view class="uni-form-item">
@@ -248,6 +250,27 @@
 				</view>
 			</uni-collapse-item>
 		</uni-collapse>
+		
+		<uni-popup ref="popup" type="bottom">
+			<view class="popup">
+				<view class="time">
+					<text>日期/能源</text>
+					<text>水读数(m³)</text>
+					<text>电读数(°)</text>
+				</view>
+				<scroll-view class="right" scroll-x>
+					<view class="date">
+						<view class="div" v-for="(item,i) in submitData.water">{{item.date}}</view>
+					</view>
+					<view class="frequency">
+						<view class="div" v-for="(item,i) in submitData.water">{{item.num}}</view>
+					</view>
+					<view class="frequency">
+						<view class="div" v-for="(item2,k) in submitData.electricity">{{item2.num}}</view>
+					</view>
+				</scroll-view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -343,7 +366,7 @@
 				}).then(res=>{
 					console.log(res)
 					this.submitData=res.result.data[0]
-					this.submitData.assets=this.submitData.assets.split(',')
+					this.submitData.assets=res.result.data[0].assets.split(',')
 					if(this.submitData.state=='已租'){
 						this.getRent(id)
 						this.billObj={
@@ -374,11 +397,14 @@
 						hsId:id
 					}
 				}).then(res=>{
-					console.log(res)
-					this.addRent=res.result.data[0]
+					console.log(res.result)
+					this.addRent=res.result.data[res.result.data.length-1]
 				}).catch(err=>{
 					console.log(err,'err')
 				})
+			},
+			statistics(type){//水电统计
+				this.$refs.popup.open()
 			},
 			changeHouse(){//修改房源资料
 				let item=JSON.stringify(this.submitData)
@@ -450,6 +476,10 @@
 					cloud:'house',
 					_id:this.submitData._id,
 				}
+				let day = new Date();
+				let today=day.getFullYear()+"-" + (day.getMonth()+1).toString().padStart(2,'0') + "-" + day.getDate().toString().padStart(2,'0');
+				this.power.water=this.submitData.water.push({date:today,num:this.submitData.waterNum})
+				this.power.electricity=this.submitData.electricity.push({date:today,num:this.submitData.electricityNum})
 				this.power.waterDiff=utils.accSub(this.power.waterNum,this.submitData.waterNum)
 				this.power.electricityDiff=utils.accSub(this.power.electricityNum,this.submitData.electricityNum) 
 				this.power.lastWaterNum = this.submitData.waterNum
@@ -603,5 +633,65 @@
 }
 .banner{
 	margin: 30rpx 0;
+}
+.popup{
+	width: 100%;
+	height: 300rpx;
+	padding-top: 10rpx;
+	background:#fff;
+	display:flex;
+	white-space: nowrap;
+	.time{
+		// margin-top: 40px;
+		width: 180rpx;
+		text{
+			display: block;
+			text-align: center;
+			height: 80rpx;
+			line-height: 80rpx;
+		}
+	}
+	.right{
+		margin-left: 20rpx;
+		// flex: 1;
+		display: inline-block;
+		width:calc(100% - 200rpx) ;
+		// overflow-y: scroll;
+		// white-space:nowrap;
+		.date{
+			width: 100%;
+			height:80rpx ;
+			.div{
+				background: #fff0e0;
+				border: 1px solid #fff0e0;
+				width: 190rpx;
+				display: inline-block;
+				height: 80rpx;
+				line-height: 80rpx;
+				text-align: center;
+				padding: 0;
+				margin: 0;
+			}
+		}
+		.frequency{
+			width: 100%;
+			height:80rpx ;
+			.div{
+				width: 190rpx;
+				display: inline-block;
+				height: 76rpx;
+				line-height: 76rpx;
+				text-align: center;
+				padding: 0;
+				margin: 0;
+				border: 1rpx solid #fff0e0;
+				// border-radius: 20rpx;
+				overflow: hidden;
+				// background: #fff0e0;
+				// margin:2rpx;
+				font-size: 14px;
+			}
+		}
+	}
 }
 </style>

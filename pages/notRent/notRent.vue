@@ -61,6 +61,11 @@
 			};
 		},
 		onLoad() {
+			if(uni.getStorageSync('login')){
+				uni.switchTab({
+					url:'../main/main'
+				})
+			}
 			this.getHouse()
 		},
 		onPullDownRefresh() {//下拉刷新
