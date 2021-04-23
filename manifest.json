@@ -1,7 +1,7 @@
 {
     "name" : "村头公寓",
     "appid" : "__UNI__EAADBDB",
-    "description" : "",
+    "description" : "记录出租房的水电读数，租赁状态",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,

@@ -9,12 +9,6 @@
 			}
 		},
 		{
-			"path" : "pages/notRent/notRent",
-			"style" : {
-				"navigationStyle":"custom"
-			}
-		},
-		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
@@ -91,12 +85,8 @@
         ,{
             "path" : "pages/moneyRecord/moneyRecord",
             "style" : {"navigationBarTitleText": "收支记录"}
-        },
-				
-				{
-            "path" : "pages/notRentInfo/notRentInfo",
-            "style" : {"navigationStyle":"custom"}
         }
+				
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

@@ -8,7 +8,7 @@
 					<view class="text">管理员</view>
 				</view>
 			</view>
-			<view class="button" @click="gotoClient">去客户端</view>
+			<!-- <view class="button" @click="gotoClient">去客户端</view> -->
 		</view>
 		<view class="banner">
 			<view class="b-top">空置房屋</view>

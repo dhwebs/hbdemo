@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/main/main",
-    "pages/notRent/notRent",
     "pages/index/index",
     "pages/ticket/ticket",
     "pages/signUp/signUp",
@@ -16,8 +15,7 @@
     "pages/rentRecord/rentRecord",
     "pages/login/login",
     "pages/repairRecord/repairRecord",
-    "pages/moneyRecord/moneyRecord",
-    "pages/notRentInfo/notRentInfo"
+    "pages/moneyRecord/moneyRecord"
   ],
   "subPackages": [],
   "window": {
